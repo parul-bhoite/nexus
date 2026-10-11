@@ -41,6 +41,19 @@ COPY migrations ./migrations
 COPY alembic.ini ./
 RUN pip install -e . --no-deps
 
+# Deps that the base install misses, so the container actually boots in a
+# deployed env. The lines above install the hashed lock with `--no-deps`, so
+# anything the lock omits never lands:
+#   - `anthropic` — the optional `[ai]` extra; `NEXUS_ANTHROPIC_API_KEY`
+#     activates the language-model provider at runtime (ADR 0011).
+#   - `cryptography` + `defusedxml` — declared in pyproject but missing from
+#     requirements-dev.lock (finding #16 lock drift); both are imported at
+#     startup (connector sealing, document XML parsing), so their absence
+#     crash-loops the container. Their transitive deps (cffi, pycparser) are
+#     already in the lock, so no pinned core version moves.
+# Real fix: regenerate requirements-dev.lock. See docs/adr/0002.
+RUN pip install "anthropic>=0.40" "cryptography>=44.0" "defusedxml>=0.7"
+
 # Non-root, and the directory is owned rather than merely writable: the app
 # writes uploads and mail under /app when the filesystem drivers are in use.
 RUN useradd --create-home --uid 10001 nexus \
