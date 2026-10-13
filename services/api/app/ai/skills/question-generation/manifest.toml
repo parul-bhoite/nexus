@@ -1,8 +1,18 @@
 name = "question-generation"
-version = "6"
+version = "7"
 description = "Choose and word the next question, naming the declared field it fills."
-model = "claude-haiku-4-5"
-max_output_tokens = 1024
+# **Sonnet, not Haiku.** The tier is a cost preference, not a correctness one, and
+# it is subordinate to the key actually working: the deployed Anthropic key could
+# call Sonnet but not `claude-haiku-4-5`, so every interview stalled here while the
+# Sonnet-backed steps around it ran. One mechanical skill on a larger model is the
+# price of a journey that completes. `effort = "low"` keeps the call cheap and, on
+# Sonnet-5 — where reasoning and the answer draw on the same `max_output_tokens`
+# allowance — keeps thinking from eating the budget and truncating the question
+# (the trap `user-discovery` documents at the other extreme). 2048, not 1024, for
+# the same headroom reason.
+model = "claude-sonnet-5"
+effort = "low"
+max_output_tokens = 2048
 cache_system = true
 requires_grounding = ["available_fields", "already_known", "conversation_so_far"]
 writes = []

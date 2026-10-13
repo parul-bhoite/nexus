@@ -95,17 +95,18 @@ the number, so raising this fails the build with the reason attached."""
 
 **It was 3, and three validators now share it.** The undeclared-target gate it
 was sized for, plus the compound check and the shape check added later — all
-three firing against `claude-haiku-4-5`. An audit of six interviews found half
-of them ending here: Finance after one question, Chief of Staff after two,
-Operations after **none**, each presented to the person as a considered
-decision to stop.
+three firing against the question generator (`claude-haiku-4-5` at the time of
+the audit; now Sonnet, since the deployed key could not reach Haiku). An audit
+of six interviews found half of them ending here: Finance after one question,
+Chief of Staff after two, Operations after **none**, each presented to the
+person as a considered decision to stop.
 
-Eight, because the arithmetic was wrong rather than the idea. A rejection is
-one Haiku call of about a second and the failure reason is fed back, so
-attempts are cheap and get better; an interview that asks a Head of Operations
-nothing is not cheap at all. The question ceiling stays at `MAX_QUESTIONS` — a
-rejected question is not a question asked, and conflating the two is what made
-this a lost turn instead of a retry.
+Eight, because the arithmetic was wrong rather than the idea. A rejection is one
+model call with the failure reason fed back, so a later attempt differs from the
+one before and gets better; an interview that asks a Head of Operations nothing
+is not cheap at all — far dearer than the extra calls, whatever the tier. The
+question ceiling stays at `MAX_QUESTIONS` — a rejected question is not a question
+asked, and conflating the two is what made this a lost turn instead of a retry.
 
 Exhausting these no longer ends the interview either. See `next_question`.
 """
