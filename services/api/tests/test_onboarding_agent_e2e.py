@@ -733,6 +733,80 @@ async def test_the_whole_journey_completes_and_persists(
 
 
 @requires_db
+async def test_a_provider_failure_in_discovery_degrades_instead_of_500(
+    app_db: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A provider error on the discovery step is caught, not a 500. **The live blocker.**
+
+    `question-generation` runs through the provider at the end of `/discovery`,
+    and a provider failure raises `LlmError` — overload, timeout, a rejected
+    request, bad credentials — not `SkillFailedError`. The onboarding routes used
+    to catch only `SkillFailedError`, so an `LlmError` escaped every guard and
+    fell through to the generic handler as a 500: the first question a new
+    workspace ever generates was exactly where production hit it, and it blocked
+    the whole journey with the typed answer lost in the rollback.
+
+    The fix is that these routes catch `LlmError` as well. This drives the real
+    failure with a provider that raises `LlmTransientError` on that one call and
+    asserts the two things the fix guarantees: `/discovery` returns a degraded
+    answer (no next question) with the person's answer **kept**, and the retry
+    endpoint `/next` reports a clean 502, never a 500.
+    """
+    from fastapi import status
+
+    import app.routes.onboarding_agent as routes
+    from app.ai.contracts import CompletionRequest, LlmTransientError
+
+    def _overloaded(_request: CompletionRequest) -> str:
+        raise LlmTransientError("provider overloaded (HTTP 503)")
+
+    # Everything scripted as normal, except the one call that fails in production.
+    provider = _provider(**{"question-generation": _overloaded})
+    _wire(monkeypatch, provider)
+
+    async with get_sessionmaker()() as db:
+        user, ws = await _workspace(db)
+        scope = _scope(user, ws)
+        try:
+            await routes.start(scope)
+            await routes.read(scope)
+            state = await routes.confirm_brief(routes.BriefIn(corrections={}), scope)
+            assert state.phase == "discovery"
+
+            answer = "I run the company and I am worried about cash"
+            # `user-discovery` succeeds and the answer is stored; then
+            # `question-generation` raises `LlmError`. Before the fix this call
+            # raised straight out to a 500. Now it degrades.
+            turn = await routes.open_discovery(routes.DiscoveryIn(answer=answer), scope)
+            assert turn.question is None, "a failed generation must defer, not fabricate"
+            assert turn.state.phase == "discovery", "the step is still open to retry"
+
+            # The answer the person typed survived — it was not rolled back with
+            # the failed generation that followed it.
+            await db.execute(
+                sa.text("SELECT set_config('nexus.workspace_id', :w, true)"), {"w": str(ws)}
+            )
+            stored_answer = (
+                await db.execute(
+                    sa.text(
+                        "SELECT count(*) FROM onboarding_turn WHERE workspace_id = :w"
+                        " AND role = 'user' AND target_field = 'persona.stated_purpose'"
+                    ),
+                    {"w": str(ws)},
+                )
+            ).scalar_one()
+            assert stored_answer == 1, "the discovery answer must be persisted"
+
+            # The dedicated retry endpoint turns the same provider failure into a
+            # 502 Retry, not an unhandled 500.
+            with pytest.raises(HTTPException) as caught:
+                await routes.next_question(scope)
+            assert caught.value.status_code == status.HTTP_502_BAD_GATEWAY
+        finally:
+            await _cleanup(db, user, ws)
+
+
+@requires_db
 async def test_the_collection_steps_come_before_the_assembly(
     app_db: None, monkeypatch: pytest.MonkeyPatch
 ) -> None:
