@@ -6,9 +6,10 @@ import { createContext, useCallback, useContext, useEffect, useState } from 'rea
 import { NavPanel } from '@/components/shell/NavPanel'
 import { WorkspaceMenu } from '@/components/shell/WorkspaceMenu'
 import { AccountMenu } from '@/components/shell/AccountMenu'
-import { NexusMark } from '@/components/ui/NexusMark'
+import { Logo } from '@/components/ui/Logo'
 import { Sheet } from '@/components/ui/Overlay'
 import { ToastProvider } from '@/components/ui/Toast'
+import { AssistantWidget } from '@/components/shell/AssistantWidget'
 import { AuthError } from '@/lib/auth-client'
 import { fetchDashboards, type Dashboards } from '@/lib/dashboard-client'
 import { fetchWorkspaces, type WorkspaceChoice } from '@/lib/settings-client'
@@ -102,10 +103,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let live = true
 
-    function expired(caught: unknown): boolean {
+    function redirectedAway(caught: unknown): boolean {
       if (caught instanceof AuthError && caught.status === 401) {
         const wanted = `${window.location.pathname}${window.location.search}`
         router.replace(`/login?next=${encodeURIComponent(wanted)}`)
+        return true
+      }
+      if (caught instanceof AuthError && caught.status === 402) {
+        // Not entitled — no plan or a lapsed trial (ADR 0084). The dashboard is
+        // not theirs to use yet, so send them to finish payment. The API is the
+        // authority here; the shell only reacts to its 402. A server-side gate
+        // in the dashboard layout redirects before render too, so this is the
+        // belt to that braces.
+        router.replace('/onboarding/agent')
         return true
       }
       return false
@@ -116,7 +126,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         if (live) setAll(dashboards)
       })
       .catch((caught: unknown) => {
-        if (!live || expired(caught)) return
+        if (!live || redirectedAway(caught)) return
         // Anything else is left to the page. The shell drawing an error over a
         // surface that may have loaded perfectly well would hide working
         // content behind a failure to draw a sidebar.
@@ -127,7 +137,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         if (live) setWorkspaces(page.workspaces)
       })
       .catch((caught: unknown) => {
-        if (!live || expired(caught)) return
+        if (!live || redirectedAway(caught)) return
         // An empty array is *known to be empty*, which is wrong here — the
         // request failed, so we do not know. `WorkspaceMenu` renders the
         // unknown case as a quiet fallback rather than as "no companies".
@@ -148,8 +158,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <ToastProvider>
       <DashboardsContext.Provider value={all}>
         <WorkspacesContext.Provider value={workspaces}>
-          <div className="theme-app min-h-screen">
-            <header className="sticky top-0 z-header border-b border-cloud-200 bg-white/90 backdrop-blur-md">
+          <div className="on-bone min-h-screen bg-bone-50">
+            <header className="sticky top-0 z-header border-b border-ink-100 bg-bone-50/90 backdrop-blur-md">
               <div className="app-shell flex h-[var(--app-header-h)] items-center gap-3">
                 <button
                   type="button"
@@ -160,7 +170,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   // An icon at 44×44, not a 56×30 box labelled "MENU". The old
                   // one was under the touch minimum on both axes and spelled a
                   // word every other app draws.
-                  className="-ml-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-cloud-600 transition-colors duration-micro ease-out hover:bg-cloud-100 hover:text-cloud-900 lg:hidden"
+                  className="-ml-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink-600 transition-colors duration-micro ease-out hover:bg-bone-200 hover:text-ink-900 lg:hidden"
                 >
                   <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-5 w-5">
                     <path
@@ -174,10 +184,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
                 <Link
                   href="/dashboard"
-                  className="inline-flex shrink-0 rounded-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-4 focus-visible:ring-offset-white"
-                  aria-label="NEXUS dashboard"
+                  className="inline-flex shrink-0 rounded-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-steel-500 focus-visible:ring-offset-4 focus-visible:ring-offset-bone-50"
+                  aria-label="NEXUS OS dashboard"
                 >
-                  <NexusMark />
+                  <Logo />
                 </Link>
 
                 {/* Which company you are in. Always, not only when there are
@@ -220,10 +230,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               description={workspaces?.find((w) => w.active)?.name}
             >
               <NavPanel all={all} onNavigate={close} />
-              <div className="mt-6 border-t border-cloud-200 pt-4 sm:hidden">
+              <div className="mt-6 border-t border-ink-100 pt-4 sm:hidden">
                 <WorkspaceMenu workspaces={workspaces} />
               </div>
             </Sheet>
+
+            {/* The global assistant, on every signed-in page — but only when the
+                deployment has switched it on (ADR 0086). While the feature is
+                dark the flag is false and nothing renders. */}
+            {all?.assistant_enabled ? <AssistantWidget /> : null}
           </div>
         </WorkspacesContext.Provider>
       </DashboardsContext.Provider>

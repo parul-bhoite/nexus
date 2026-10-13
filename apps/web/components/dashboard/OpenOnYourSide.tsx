@@ -33,14 +33,14 @@ export function OpenOnYourSide({ questions }: { questions: OpenQuestions }) {
 
   return (
     <section aria-labelledby="open-heading">
-      <h2 id="open-heading" className="font-sans text-title font-semibold text-cloud-900">
+      <h2 id="open-heading" className="font-display text-title font-medium text-ink-900">
         Open on your side
       </h2>
-      <p className="mt-1 max-w-prose text-sm text-cloud-500">
+      <p className="mt-1 max-w-prose text-sm text-ink-500">
         Questions only. What you connect is a different kind of thing and sits above.
       </p>
 
-      <div className="app-sunken mt-4 px-5 py-5">
+      <div className="mt-4 rounded-2xl border border-ink-100 bg-bone-100 px-5 py-5">
         {questions.changes_a_figure.length > 0 ? (
           <>
             <p className="font-mono text-2xs uppercase tracking-[0.1em] text-clay-600">
@@ -52,17 +52,17 @@ export function OpenOnYourSide({ questions }: { questions: OpenQuestions }) {
               {questions.changes_a_figure.map((question) => (
                 <li
                   key={`${question.department}.${question.key}`}
-                  className="border-b border-cloud-200 py-3 last:border-b-0"
+                  className="border-b border-ink-100 py-3 last:border-b-0"
                 >
-                  <p className="text-[0.95rem] font-medium text-cloud-900">{question.prompt}</p>
+                  <p className="text-[0.95rem] font-medium text-ink-900">{question.prompt}</p>
                   {/* The bank's own sentence about what the answer is for. A
                       question with no stated purpose is a form field (doc 06),
                       and rewriting it here would make two of them. */}
-                  <p className="mt-1 max-w-prose text-sm leading-relaxed text-cloud-600">
+                  <p className="mt-1 max-w-prose text-sm leading-relaxed text-ink-600">
                     {question.why}
                   </p>
-                  <p className="mt-1.5 text-2xs text-cloud-400">
-                    Read by <span className="text-cloud-600">{question.consumer_name}</span>
+                  <p className="mt-1.5 text-2xs text-ink-400">
+                    Read by <span className="text-ink-600">{question.consumer_name}</span>
                   </p>
                 </li>
               ))}
@@ -72,13 +72,13 @@ export function OpenOnYourSide({ questions }: { questions: OpenQuestions }) {
 
         {questions.waiting_on_us > 0 ? (
           <p
-            className={`max-w-prose text-sm leading-relaxed text-cloud-500 ${
+            className={`max-w-prose text-sm leading-relaxed text-ink-500 ${
               questions.changes_a_figure.length > 0
-                ? 'mt-4 border-t border-cloud-200 pt-3'
+                ? 'mt-4 border-t border-ink-100 pt-3'
                 : ''
             }`}
           >
-            <span className="font-semibold text-cloud-800">
+            <span className="font-semibold text-ink-800">
               {/* F-25: "1 more questions" — pluralised on the count like its
                   neighbours (`changes_a_figure`'s own copy a few lines up). */}
               {questions.waiting_on_us} more {questions.waiting_on_us === 1 ? 'question' : 'questions'}
@@ -93,7 +93,7 @@ export function OpenOnYourSide({ questions }: { questions: OpenQuestions }) {
 
         <Link
           href="/onboarding"
-          className="mt-4 inline-block text-sm font-medium text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700"
+          className="mt-4 inline-block text-sm font-medium text-steel-600 underline decoration-steel-300 underline-offset-2 hover:text-steel-700"
         >
           Answer these in workspace setup
         </Link>

@@ -14,24 +14,34 @@
     --app-header-h: 3.5rem;
     --app-nav-w: 15rem;
 
-    /* Button skin (ADR 0066). The defaults are the landing page's ink pill;
-       `.theme-app` overrides them to the product's indigo. Raw values live here,
-       in the token file, mirroring the Tailwind palette they name in comments. */
-    --btn-radius: 9999px;
-    --btn-primary-bg: #091f46; /* ink-800 */
-    --btn-primary-bg-hover: #0f2851; /* ink-700 */
-    --btn-primary-fg: #fbfaf8; /* bone-50 */
-    --btn-secondary-fg: #091f46; /* ink-800 */
-    --btn-secondary-border: #c2cee2; /* ink-200 */
-    --btn-secondary-border-hover: #93a8c7; /* ink-300 */
-    --btn-secondary-bg-hover: #fbfaf8; /* bone-50 */
-    --btn-ghost-fg: #0f2851; /* ink-700 */
-    --btn-ghost-bg-hover: #e9e4de; /* bone-200 */
-    --btn-ghost-fg-hover: #061634; /* ink-900 */
-    --btn-quiet-fg: #2f4c7b; /* ink-500 */
-    --btn-quiet-deco: #93a8c7; /* ink-300 */
-    --btn-quiet-fg-hover: #091f46; /* ink-800 */
-    --btn-quiet-deco-hover: #2f4c7b; /* ink-500 */
+    /* The accent and ink as CSS variables, so SVG `fill`/`stroke` (which Tailwind
+       cannot reach) can take the tokens instead of hard-coded hex — see
+       components/ui/Logo.tsx. Sourced from the token scales via theme(). */
+    --accent: theme('colors.gold.500');
+    --accent-strong: theme('colors.gold.600');
+    --ink: theme('colors.ink.950');
+
+    /* The decorative palette for the bespoke SVG illustrations (the hero
+       landscape, the Brain diagram, the Directors dials, the onboarding aura).
+       These components paint with SVG fill/stroke, which Tailwind cannot reach,
+       so they reference these variables instead of hard-coded hex. Every value
+       is a token — the monochrome ladder plus the blue accent — so the art
+       stays in step with the rest of the system (ADR 0072). */
+    --c-white: theme('colors.white');
+    --c-surface: theme('colors.bone.50');
+    --c-surface-2: theme('colors.bone.100');
+    --c-surface-3: theme('colors.bone.200');
+    --c-line: theme('colors.bone.300');
+    --c-grey-200: theme('colors.ink.200');
+    --c-grey-300: theme('colors.ink.300');
+    --c-grey-400: theme('colors.ink.400');
+    --c-grey-500: theme('colors.ink.500');
+    --c-grey-600: theme('colors.ink.600');
+    --c-grey-700: theme('colors.ink.700');
+    --c-ink-800: theme('colors.ink.800');
+    --c-ink: theme('colors.ink.950');
+    --c-warn: theme('colors.clay.500');
+    --c-warn-soft: theme('colors.clay.400');
   }
 
   html {
@@ -49,22 +59,21 @@
   }
 
   body {
+    /* Clean monochrome ground — the cut-paper grain is gone (ADR 0072). */
     @apply bg-white text-ink-800 font-sans antialiased;
-    /* Fine paper grain — sells the cut-paper concept without an image request. */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
   }
 
   ::selection {
-    @apply bg-gold-300 text-ink-900;
+    @apply bg-gold-200 text-ink-900;
   }
 
-  /* One focus style for the whole product.
+  /* One focus style for the whole product — the blue accent, the single spark.
      The audit found three: a `ring-2` here, an `outline` with a different
      offset there, and several controls with nothing at all. A keyboard user
      cannot learn an interface whose focus indicator changes shape between two
      buttons in the same row. */
   :focus-visible {
-    @apply outline-none ring-2 ring-steel-500 ring-offset-2 ring-offset-white rounded-sm;
+    @apply outline-none ring-2 ring-gold-500 ring-offset-2 ring-offset-white rounded-sm;
   }
 
   /* Any element that declares itself a surface re-bases the ring offset onto
@@ -160,7 +169,7 @@
     @apply w-full rounded-control border border-ink-200 bg-white px-3.5 py-2.5 text-body text-ink-800;
     @apply transition-[border-color,box-shadow] duration-base ease-out;
     @apply placeholder:text-ink-300 hover:border-ink-300;
-    @apply focus:outline-none focus:ring-2 focus:ring-steel-500 focus:ring-offset-2 focus:ring-offset-white;
+    @apply focus:outline-none focus:ring-2 focus:ring-gold-500 focus:ring-offset-2 focus:ring-offset-white;
     @apply disabled:cursor-not-allowed disabled:bg-bone-100 disabled:text-ink-400;
   }
 
@@ -171,7 +180,7 @@
      inherited (see the element rule in the base layer). */
   select.control {
     @apply cursor-pointer appearance-none bg-no-repeat pr-10;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'%3E%3Cpath d='m4 6.25 4 4 4-4' stroke='%234A6489' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'%3E%3Cpath d='m4 6.25 4 4 4-4' stroke='%238A909A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-position: right 0.875rem center;
   }
 
@@ -226,106 +235,6 @@
   .interactive {
     @apply transition-[background-color,border-color,box-shadow,transform] duration-base ease-out;
     @apply hover:border-ink-200 hover:shadow-e2 active:translate-y-px;
-  }
-
-  /* ── The product theme (ADR 0066) ──────────────────────────────────────────
-     A white-based, indigo-accented system for the signed-in app: onboarding,
-     the dashboard, auth and the rest of the authenticated shell. Everything
-     here is scoped under `.theme-app`, and the landing page never carries that
-     class, so the cut-paper identity on `/` is untouched by any of it.
-
-     Components inside the app address their appearance through these classes
-     rather than literal colours, exactly as the marketing side addresses the
-     paper surfaces through `.paper`. */
-  .theme-app :is(h1, h2, h3, h4) {
-    /* The base layer sets every heading in serif ink for the marketing side.
-       The product reads in sans on cool neutral — one override, rather than a
-       `font-sans` on every heading in the app. */
-    @apply font-sans text-cloud-900;
-  }
-
-  .theme-app {
-    @apply bg-white text-cloud-700;
-    /* Opaque white: covers the body's paper grain so the app reads as a clean
-       product surface rather than the marketing page's warm stock. */
-    background-image: none;
-
-    /* Recolour the shared Button to the product's indigo, and square its corners
-       to the control radius the reference uses (ADR 0066). */
-    --btn-radius: 0.625rem;
-    --btn-primary-bg: #1a3d63; /* brand-500 */
-    --btn-primary-bg-hover: #163453; /* brand-600 */
-    --btn-primary-fg: #ffffff;
-    --btn-secondary-fg: #334155; /* cloud-700 */
-    --btn-secondary-border: #d3dbe6; /* cloud-300 */
-    --btn-secondary-border-hover: #9ca8ba; /* cloud-400 */
-    --btn-secondary-bg-hover: #f8fafc; /* cloud-50 */
-    --btn-ghost-fg: #334155; /* cloud-700 */
-    --btn-ghost-bg-hover: #f1f4f9; /* cloud-100 */
-    --btn-ghost-fg-hover: #0f172a; /* cloud-900 */
-    --btn-quiet-fg: #64748b; /* cloud-500 */
-    --btn-quiet-deco: #d3dbe6; /* cloud-300 */
-    --btn-quiet-fg-hover: #163453; /* brand-600 */
-    --btn-quiet-deco-hover: #4a7fa7; /* brand-400 */
-  }
-
-  /* The app re-bases its focus ring onto white and onto the brand hue, so the
-     signed-in product has one focus colour and the marketing side keeps steel. */
-  .theme-app :focus-visible {
-    @apply ring-brand-500 ring-offset-white;
-  }
-
-  /* Surfaces. `app-card` is the resting white card; `app-panel` is a larger
-     grouping; `app-sunken` is the inset tint used for wells and empty rows. */
-  .app-card {
-    @apply rounded-data border border-cloud-200 bg-white shadow-e1;
-  }
-  .app-panel {
-    @apply rounded-card border border-cloud-200 bg-white shadow-e1;
-  }
-  .app-sunken {
-    @apply rounded-data border border-cloud-200 bg-cloud-50;
-  }
-  .app-hairline {
-    @apply h-px w-full bg-cloud-200;
-  }
-
-  /* The primary action. One indigo button for the whole app. */
-  .app-btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-control bg-brand-500 px-4 py-2.5 text-body font-medium text-white;
-    @apply transition-[background-color,box-shadow,transform] duration-base ease-out;
-    @apply hover:bg-brand-600 active:translate-y-px;
-    @apply disabled:cursor-not-allowed disabled:bg-cloud-300 disabled:text-white/80;
-  }
-  /* The quiet action. A bordered white button for secondary choices. */
-  .app-btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-control border border-cloud-300 bg-white px-4 py-2.5 text-body font-medium text-cloud-700;
-    @apply transition-[background-color,border-color,box-shadow] duration-base ease-out;
-    @apply hover:border-cloud-400 hover:bg-cloud-50;
-    @apply disabled:cursor-not-allowed disabled:text-cloud-400;
-  }
-
-  /* One control shape for every input/select/textarea inside the app theme —
-     the white-based counterpart of `.control`. */
-  .app-field {
-    @apply w-full rounded-control border border-cloud-300 bg-white px-3.5 py-2.5 text-body text-cloud-800;
-    @apply transition-[border-color,box-shadow] duration-base ease-out;
-    @apply placeholder:text-cloud-400 hover:border-cloud-400;
-    @apply focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-white;
-    @apply disabled:cursor-not-allowed disabled:bg-cloud-100 disabled:text-cloud-400;
-  }
-  select.app-field {
-    @apply cursor-pointer appearance-none bg-no-repeat pr-10;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'%3E%3Cpath d='m4 6.25 4 4 4-4' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-position: right 0.875rem center;
-  }
-
-  /* A label on an app control. */
-  .app-label {
-    @apply block text-label font-medium text-cloud-700;
-  }
-  .app-hint {
-    @apply text-meta text-cloud-500;
   }
 }
 
@@ -383,40 +292,6 @@
 
   .animate-word-rise {
     animation: word-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  /* A line that draws itself in from the left — the gold underline on the auth
-     card's heading. Paired with an `animation-delay` so it lands after the words. */
-  @keyframes grow-x {
-    from { transform: scaleX(0); }
-    to   { transform: scaleX(1); }
-  }
-  .animate-grow-x {
-    transform-origin: left;
-    animation: grow-x 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  /* A slow sheen travelling along a gradient — the blue↔gold accent bar on the
-     auth card. Animates `background-position`, which the compositor handles. */
-  @keyframes sheen-x {
-    from { background-position: 200% 0; }
-    to   { background-position: -200% 0; }
-  }
-  .animate-sheen {
-    background-size: 200% 100%;
-    animation: sheen-x 7s linear infinite;
-  }
-
-  /* A scan line sweeping down a surface — the onboarding "researching your
-     company" animation. Its container clips it; `top` sweeps 0 → 100%. */
-  @keyframes scan-line {
-    0% { top: 0; opacity: 0; }
-    12% { opacity: 1; }
-    88% { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-  }
-  .animate-scan-line {
-    animation: scan-line 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
 }
 

@@ -55,13 +55,13 @@ export function VerifyEmailPanel() {
   }, [token])
 
   if (state.status === 'working') {
-    return <p className="text-cloud-500">Confirming your email address…</p>
+    return <p className="text-ink-500">Confirming your email address…</p>
   }
 
   if (state.status === 'verified') {
     return (
       <div className="flex flex-col gap-6">
-        <p className="text-cloud-700">
+        <p className="text-ink-700">
           Your email address is confirmed. You can invite colleagues and connect tools now.
         </p>
         <Button href="/account" size="lg" icon={<ArrowRight />} className="w-fit">
@@ -81,14 +81,14 @@ export function VerifyEmailPanel() {
           ? 'This page needs the link from your confirmation email.'
           : state.message}
       </div>
-      <p className="text-sm text-cloud-500">
+      <p className="text-sm text-ink-500">
         Confirmation links work once and expire after 24 hours. Signing in and asking for a new
         one is the fastest way out of this — and you can keep using NEXUS OS meanwhile:
         confirming your address is needed to invite people and connect tools, not to look around.
       </p>
       <Link
         href="/login"
-        className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700"
+        className="font-medium text-steel-600 underline decoration-steel-300 underline-offset-2 hover:text-steel-700"
       >
         Sign in
       </Link>

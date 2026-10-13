@@ -69,10 +69,10 @@ export function CompanyBrain() {
   if (state.status === 'unreachable') {
     return (
       <section aria-labelledby="brain-heading">
-        <h2 id="brain-heading" className="font-sans text-title font-semibold text-cloud-900">
+        <h2 id="brain-heading" className="font-display text-title font-medium text-ink-900">
           Company Brain
         </h2>
-        <p className="mt-2 max-w-prose text-sm text-cloud-500">
+        <p className="mt-2 max-w-prose text-sm text-ink-500">
           Could not load what NEXUS is working from. Nothing above is affected — this
           panel reads from a separate place, and it is the reading that failed rather
           than the brain.
@@ -87,30 +87,30 @@ export function CompanyBrain() {
 
   return (
     <section aria-labelledby="brain-heading">
-      <h2 id="brain-heading" className="font-sans text-title font-semibold text-cloud-900">
+      <h2 id="brain-heading" className="font-display text-title font-medium text-ink-900">
         Company Brain
       </h2>
-      <p className="mt-1 max-w-prose text-sm text-cloud-500">
+      <p className="mt-1 max-w-prose text-sm text-ink-500">
         Everything NEXUS is working from. Your words, not a measurement — which is why
         nothing here is a score.
       </p>
 
-      <div className="app-sunken mt-4 px-5 py-5">
+      <div className="mt-4 rounded-2xl border border-ink-100 bg-bone-100 px-5 py-5">
         {answered.length > 0 ? (
           <dl className="grid gap-x-8 sm:grid-cols-2">
             {answered.map((field) => (
-              <div key={field.key} className="border-b border-cloud-200 py-3">
-                <dt className="font-mono text-2xs uppercase tracking-[0.07em] text-cloud-500">
+              <div key={field.key} className="border-b border-ink-200 py-3">
+                <dt className="font-mono text-2xs uppercase tracking-[0.07em] text-ink-500">
                   {field.label}
                 </dt>
-                <dd className="mt-1 text-sm leading-relaxed text-cloud-800">
+                <dd className="mt-1 text-sm leading-relaxed text-ink-800">
                   {brain[field.key] as string}
                 </dd>
               </div>
             ))}
           </dl>
         ) : (
-          <p className="max-w-prose text-sm leading-relaxed text-cloud-600">
+          <p className="max-w-prose text-sm leading-relaxed text-ink-600">
             {/* Not "no data". Nothing has been built yet is a different fact from
                 nothing being known, and setup is where one becomes the other. */}
             Nothing has been assembled yet. It is built from your setup answers, so it
@@ -128,24 +128,36 @@ export function CompanyBrain() {
                 // F-28: `key={assumption}` collides on a repeated or empty
                 // string. The index is stable — this list is rendered once
                 // per brain and never reordered.
-                <li key={assumption || index} className="text-sm leading-relaxed text-cloud-800">
+                <li key={assumption || index} className="text-sm leading-relaxed text-ink-800">
                   {assumption}
                 </li>
               ))}
             </ul>
-            <p className="mt-2 text-sm text-cloud-600">
+            <p className="mt-2 text-sm text-ink-600">
               These came from your website and your answers, not from you directly.
               Correcting one changes what the capabilities that read it will count.
             </p>
           </div>
         ) : null}
 
-        <Link
-          href="/settings"
-          className="mt-4 inline-block text-sm font-medium text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700"
-        >
-          Edit in settings
-        </Link>
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
+          <Link
+            href="/settings"
+            className="text-sm font-medium text-steel-600 underline decoration-steel-300 underline-offset-2 hover:text-steel-700"
+          >
+            Edit in settings
+          </Link>
+          {/* ADR 0069 phase 2: this panel stays the glance — four fields and
+              the assumptions that need auditing. The full list, every
+              answered threshold and (stretch) the relationship graph live on
+              their own page rather than growing this one past the fold. */}
+          <Link
+            href="/brain"
+            className="text-sm font-medium text-steel-600 underline decoration-steel-300 underline-offset-2 hover:text-steel-700"
+          >
+            See your full Company Brain →
+          </Link>
+        </div>
       </div>
     </section>
   )

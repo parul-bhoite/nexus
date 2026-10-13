@@ -46,7 +46,7 @@ export function PageHeader({
         <nav aria-label="Breadcrumb">
           <Link
             href={crumb.href}
-            className="group inline-flex items-center gap-1.5 text-meta text-cloud-500 transition-colors duration-micro ease-out hover:text-cloud-800"
+            className="group inline-flex items-center gap-1.5 text-meta text-ink-500 transition-colors duration-micro ease-out hover:text-ink-800"
           >
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="h-3.5 w-3.5 transition-transform duration-base ease-out group-hover:-translate-x-0.5">
               <path d="M10 3.5 5.5 8l4.5 4.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -58,9 +58,9 @@ export function PageHeader({
 
       <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
         <div className="min-w-0 flex-1">
-          <h1 className="text-page text-cloud-900">{title}</h1>
+          <h1 className="text-page text-ink-900">{title}</h1>
           {lede ? (
-            <p className="mt-2 max-w-prose text-body leading-relaxed text-cloud-500">{lede}</p>
+            <p className="mt-2 max-w-prose text-body leading-relaxed text-ink-500">{lede}</p>
           ) : null}
         </div>
         {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div> : null}
@@ -99,9 +99,9 @@ export function Section({
       {title || action ? (
         <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
           <div className="min-w-0">
-            {title ? <h2 className="text-section text-cloud-900">{title}</h2> : null}
+            {title ? <h2 className="text-section text-ink-900">{title}</h2> : null}
             {lede ? (
-              <p className="mt-1 max-w-prose text-meta leading-relaxed text-cloud-500">{lede}</p>
+              <p className="mt-1 max-w-prose text-meta leading-relaxed text-ink-500">{lede}</p>
             ) : null}
           </div>
           {action ? <div className="shrink-0">{action}</div> : null}

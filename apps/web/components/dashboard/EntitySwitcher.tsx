@@ -86,11 +86,11 @@ export function EntitySwitcher() {
 
   if (unreadable) {
     return (
-      <p className="text-sm text-cloud-400">
+      <p className="text-sm text-ink-400">
         Could not check which companies you hold.{' '}
         <a
           href="/settings"
-          className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-2"
+          className="font-medium text-steel-600 underline decoration-steel-300 underline-offset-2"
         >
           Settings lists them
         </a>
@@ -126,7 +126,7 @@ export function EntitySwitcher() {
   return (
     <div className="flex flex-col gap-2">
       <nav aria-label="Companies" className="flex flex-wrap items-center gap-2">
-        <span className="font-mono text-2xs uppercase tracking-[0.12em] text-cloud-400">
+        <span className="font-mono text-2xs uppercase tracking-[0.12em] text-ink-400">
           Company
         </span>
         {entities.map((entity) => (
@@ -138,8 +138,8 @@ export function EntitySwitcher() {
             aria-current={entity.active ? 'true' : undefined}
             className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
               entity.active
-                ? 'bg-brand-500 text-white'
-                : 'border border-cloud-200 text-cloud-600 hover:border-cloud-300 hover:text-cloud-900'
+                ? 'bg-ink-800 text-bone-50'
+                : 'border border-ink-100 text-ink-600 hover:border-ink-300 hover:text-ink-900'
             }`}
           >
             {switching === entity.workspace_id ? 'Switching…' : entity.name}
@@ -154,7 +154,7 @@ export function EntitySwitcher() {
       {announce && active ? (
         <p
           role="status"
-          className="text-sm font-medium text-brand-700"
+          className="text-sm font-medium text-steel-700"
         >
           Now in {active.name}. Every figure below is theirs.
         </p>

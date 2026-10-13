@@ -54,8 +54,8 @@ export function AssistantPanel({
   // textarea and no form in the tree at all.
   if (!assistant.available) {
     return (
-      <aside className="app-card mt-8 px-5 py-5">
-        <p className="font-mono text-2xs uppercase tracking-[0.12em] text-cloud-400">
+      <aside className="mt-8 rounded-2xl border border-ink-100 bg-white px-5 py-5 shadow-paper">
+        <p className="font-mono text-2xs uppercase tracking-[0.12em] text-ink-400">
           Ask the {assistant.director}
         </p>
         <ul className="mt-3 flex flex-col gap-2">
@@ -64,12 +64,12 @@ export function AssistantPanel({
             // question twice, or repeats the placeholder empty string —
             // falling back to the array index, which is stable here because
             // this list is never reordered or filtered.
-            <li key={q || index} className="text-[0.95rem] leading-relaxed text-cloud-700">
+            <li key={q || index} className="text-[0.95rem] leading-relaxed text-ink-700">
               &ldquo;{q}&rdquo;
             </li>
           ))}
         </ul>
-        <p className="mt-4 border-t border-cloud-200 pt-3 text-sm leading-relaxed text-cloud-500">
+        <p className="mt-4 border-t border-ink-100 pt-3 text-sm leading-relaxed text-ink-500">
           Not available yet. When it is, it will answer from the documents this workspace has
           uploaded — every answer quoting the passage it came from, and a question your documents
           cannot answer refused with the reason rather than answered thinly.
@@ -99,8 +99,8 @@ export function AssistantPanel({
   }
 
   return (
-    <aside className="app-card mt-8 px-5 py-5">
-      <p className="font-mono text-2xs uppercase tracking-[0.12em] text-cloud-400">
+    <aside className="mt-8 rounded-2xl border border-ink-100 bg-white px-5 py-5 shadow-paper">
+      <p className="font-mono text-2xs uppercase tracking-[0.12em] text-ink-400">
         Ask the {assistant.director}
       </p>
 
@@ -115,16 +115,16 @@ export function AssistantPanel({
           rows={2}
           maxLength={1000}
           placeholder={assistant.questions[0] ?? 'Ask about an uploaded document'}
-          className="w-full resize-none rounded-xl border border-cloud-200 px-3 py-2 text-[0.95rem] leading-relaxed text-cloud-800 focus:border-brand-400 focus:outline-none"
+          className="w-full resize-none rounded-xl border border-ink-200 px-3 py-2 text-[0.95rem] leading-relaxed text-ink-800 focus:border-ink-400 focus:outline-none"
         />
         <div className="flex items-center justify-between gap-3">
-          <p className="text-2xs text-cloud-400">
+          <p className="text-2xs text-ink-400">
             Answers come from documents this workspace has uploaded, quoting the passage.
           </p>
           <button
             type="submit"
             disabled={pending || !question.trim()}
-            className="rounded-lg bg-brand-500 px-3 py-1.5 text-sm text-white hover:bg-brand-600 disabled:opacity-40"
+            className="rounded-lg bg-ink-900 px-3 py-1.5 text-sm text-white disabled:opacity-40"
           >
             {pending ? 'Reading…' : 'Ask'}
           </button>
@@ -132,13 +132,13 @@ export function AssistantPanel({
       </form>
 
       {!reply && !pending && !failed ? (
-        <ul className="mt-4 flex flex-col gap-2 border-t border-cloud-200 pt-3">
+        <ul className="mt-4 flex flex-col gap-2 border-t border-ink-100 pt-3">
           {assistant.questions.map((q, index) => (
             <li key={q || index}>
               <button
                 type="button"
                 onClick={() => setQuestion(q)}
-                className="text-left text-[0.95rem] leading-relaxed text-cloud-600 hover:text-cloud-900"
+                className="text-left text-[0.95rem] leading-relaxed text-ink-600 hover:text-ink-900"
               >
                 &ldquo;{q}&rdquo;
               </button>
@@ -148,7 +148,7 @@ export function AssistantPanel({
       ) : null}
 
       {failed ? (
-        <p className="mt-4 border-t border-cloud-200 pt-3 text-sm leading-relaxed text-cloud-500">
+        <p className="mt-4 border-t border-ink-100 pt-3 text-sm leading-relaxed text-ink-500">
           {failed}
         </p>
       ) : null}
@@ -157,15 +157,15 @@ export function AssistantPanel({
         /* The sentence, alone. No citations, no prose, nothing added. */
         <p
           data-testid="assistant-refusal"
-          className="mt-4 border-t border-cloud-200 pt-3 text-sm leading-relaxed text-cloud-500"
+          className="mt-4 border-t border-ink-100 pt-3 text-sm leading-relaxed text-ink-500"
         >
           {reply.sentence}
         </p>
       ) : null}
 
       {reply?.answered ? (
-        <div className="mt-4 border-t border-cloud-200 pt-3">
-          <p className="text-[0.95rem] leading-relaxed text-cloud-800">{reply.prose}</p>
+        <div className="mt-4 border-t border-ink-100 pt-3">
+          <p className="text-[0.95rem] leading-relaxed text-ink-800">{reply.prose}</p>
           <ul className="mt-3 flex flex-col gap-1">
             {reply.citations.map((citation, index) => (
               // F-28: `chunkId` defaults to `''` when the server omits it
@@ -181,7 +181,7 @@ export function AssistantPanel({
                   // the row it lands on.
                   href={`/documents#doc-${citation.documentId}`}
                   data-testid="assistant-citation"
-                  className="font-mono text-2xs text-cloud-500 underline underline-offset-2 hover:text-cloud-900"
+                  className="font-mono text-2xs text-ink-500 underline underline-offset-2 hover:text-ink-900"
                 >
                   {citation.sourceLabel ?? 'Source'}
                   {citation.sourcePage !== null ? `, page ${citation.sourcePage}` : ''}

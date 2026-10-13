@@ -63,7 +63,7 @@ export function AccountPanel() {
   }
 
   if (state.status === 'loading') {
-    return <Waiting className="font-mono text-sm text-cloud-500">Loading your account…</Waiting>
+    return <Waiting>Loading your account…</Waiting>
   }
 
   if (state.status === 'error') {
@@ -80,7 +80,7 @@ export function AccountPanel() {
   if (state.status === 'anonymous') {
     return (
       <div className="flex flex-col gap-5">
-        <p className="text-[0.95rem] text-cloud-700">
+        <p className="text-[0.95rem] text-ink-700">
           You are not signed in. Your session may have expired — they last 12 hours.
         </p>
         <Button href="/login" size="lg" className="w-fit">
@@ -111,31 +111,31 @@ export function AccountPanel() {
           rather than restated: the company already has a section of its own,
           and printing its name twice over is how the UUID came to look
           acceptable in the first place. */}
-      <dl className="app-card overflow-hidden px-5 py-4">
-        <dt className="font-mono text-2xs uppercase tracking-[0.12em] text-cloud-400">
+      <dl className="overflow-hidden rounded-2xl border border-ink-100 bg-white px-5 py-4">
+        <dt className="font-mono text-2xs uppercase tracking-[0.12em] text-ink-400">
           Signed in as
         </dt>
-        <dd className="mt-1 break-all text-sm text-cloud-800">
+        <dd className="mt-1 break-all text-sm text-ink-800">
           {session.email ?? <span className="font-mono">{session.user_id}</span>}
         </dd>
       </dl>
 
       {/* ── Workspaces ── */}
       <section>
-        <h2 className="font-sans text-lg font-semibold text-cloud-900">Your company</h2>
+        <h2 className="font-display text-lg font-medium text-ink-900">Your company</h2>
 
         {company ? (
           <>
-            <div className="app-card mt-3 flex items-center justify-between gap-4 px-4 py-3">
-              <span className="font-medium text-cloud-900">{company.name}</span>
-              <span className="rounded-full bg-cloud-100 px-2.5 py-1 font-mono text-2xs uppercase tracking-[0.08em] text-cloud-600">
+            <div className="mt-3 flex items-center justify-between gap-4 rounded-xl border border-ink-100 bg-white px-4 py-3 shadow-paper">
+              <span className="font-medium text-ink-900">{company.name}</span>
+              <span className="rounded-full bg-bone-200 px-2.5 py-1 font-mono text-2xs uppercase tracking-[0.08em] text-ink-600">
                 {company.role}
               </span>
             </div>
 
-            <div className="app-card mt-4 px-5 py-5">
-              <p className="font-sans text-lg font-semibold text-cloud-900">Set up your workspace</p>
-              <p className="mt-2 text-[0.95rem] leading-relaxed text-cloud-700">
+            <div className="mt-4 rounded-2xl border border-ink-100 bg-white px-5 py-5 shadow-paper">
+              <p className="font-display text-lg text-ink-900">Set up your workspace</p>
+              <p className="mt-2 text-[0.95rem] leading-relaxed text-ink-700">
                 Tell NEXUS about your business, and invite the people who work in it.
                 Each answer is stored at its own scope — the deal size as a Sales fact,
                 the marketing budget as a Finance one — and the wizard shows you which
@@ -153,7 +153,7 @@ export function AccountPanel() {
             </div>
           </>
         ) : (
-          <div className="app-card mt-3 px-5 py-5">
+          <div className="mt-3 rounded-2xl border border-ink-100 bg-white px-5 py-5 shadow-paper">
             {/* **D19: creating a company needs no domain claim.**
 
                 This said a workspace "only exists once someone has proved they
@@ -166,19 +166,19 @@ export function AccountPanel() {
                 they land on told them to go and edit a DNS record, and nothing
                 anywhere linked to the step they actually needed. Verification
                 still gates *inviting colleagues*, which is where it belongs. */}
-            <p className="font-sans text-lg font-semibold text-cloud-900">Create your company</p>
-            <p className="mt-2 text-[0.95rem] leading-relaxed text-cloud-700">
+            <p className="font-display text-lg text-ink-900">Create your company</p>
+            <p className="mt-2 text-[0.95rem] leading-relaxed text-ink-700">
               One step, and you can start straight away. You do not need to prove you own
               the domain first — that comes later, and only when you want to invite your
               colleagues, which is the rule that stops anyone adding themselves to your
               company.
             </p>
-            <p className="mt-3 text-[0.95rem] leading-relaxed text-cloud-700">
+            <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-700">
               When you do come to prove it, that needs a DNS TXT record, a file published
               on the site, or an email address on the domain itself.{' '}
               <Link
                 href="/settings"
-                className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700"
+                className="font-medium text-steel-600 underline decoration-steel-300 underline-offset-2 hover:text-steel-700"
               >
                 Settings
               </Link>{' '}

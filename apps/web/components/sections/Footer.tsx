@@ -1,4 +1,4 @@
-import { NexusMark } from '@/components/ui/NexusMark'
+import { Logo } from '@/components/ui/Logo'
 import { footer, site } from '@/lib/content'
 
 export function Footer() {
@@ -7,7 +7,7 @@ export function Footer() {
       <div className="shell-full py-16">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_2fr]">
           <div>
-            <NexusMark />
+            <Logo />
             <p className="mt-5 max-w-sm text-pretty text-sm leading-relaxed text-ink-500">
               {footer.blurb}
             </p>
