@@ -269,6 +269,27 @@ def _assistant_answer() -> str:
     )
 
 
+def _assistant_global() -> str:
+    """`assistant-global`.
+
+    Answers a question from a bundle of already-computed figures and produces no
+    numeral of its own, so the fixture — like `_assistant_answer` — states a fact
+    in plain words and invents no number. `answered` true with a one-sentence
+    `answer` is the whole shape; a refusal is `answered` false with an empty
+    `answer`.
+
+    Not used by any onboarding journey — scripted only because the fixture test
+    below asserts every registered skill has one, and `ScriptedProvider` raises
+    on an unscripted skill.
+    """
+    return json.dumps(
+        {
+            "answered": True,
+            "answer": "Cash on hand covers the quarter.",
+        }
+    )
+
+
 def _narration() -> str:
     """`narrate-metric` (`doc/13` step B).
 
@@ -303,6 +324,7 @@ def _provider(**overrides: Any) -> ScriptedProvider:
         # added it.
         "narrate-metric": _narration(),
         "assistant-answer": _assistant_answer(),
+        "assistant-global": _assistant_global(),
     }
     script.update(overrides)
     return ScriptedProvider(script)
@@ -333,6 +355,7 @@ def test_the_scripted_fixtures_match_the_real_skill_schemas() -> None:
         "context-personalization": _context(),
         "narrate-metric": _narration(),
         "assistant-answer": _assistant_answer(),
+        "assistant-global": _assistant_global(),
     }
     assert set(scripted) == set(registry.names()), "a skill has no scripted fixture"
 
@@ -2251,8 +2274,9 @@ async def test_the_dashboard_sees_what_the_interview_collected(
             # Every pair names a real bank question, or the counter would never
             # reach zero however many questions were answered.
             from app.domain.question_bank import BY_DEPARTMENT
+            from app.domain.scopes import Department
 
-            bank = {q.key for q in BY_DEPARTMENT["operations"]}
+            bank = {q.key for q in BY_DEPARTMENT[Department.OPERATIONS]}
             assert ops <= bank, f"answered keys that no bank question has: {ops - bank}"
         finally:
             await _cleanup(db, user, ws)
@@ -2267,12 +2291,13 @@ def test_every_bank_mapping_names_a_real_question() -> None:
     """
     from app.ai.runtime.fields import askable_fields
     from app.domain.question_bank import BY_DEPARTMENT
+    from app.domain.scopes import Department
 
     mapped = [s for s in askable_fields(None) if s.question_key]
     assert len(mapped) >= 15, "too few mappings for this to prove anything"
     for spec in mapped:
         assert spec.department, f"{spec.key} maps to a bank question but has no department"
-        bank = {q.key for q in BY_DEPARTMENT.get(spec.department, ())}
+        bank = {q.key for q in BY_DEPARTMENT.get(Department(spec.department), ())}
         assert spec.question_key in bank, (
             f"{spec.key} -> {spec.question_key!r} is not a question in {spec.department}"
         )
