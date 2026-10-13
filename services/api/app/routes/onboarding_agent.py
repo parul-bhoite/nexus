@@ -1289,7 +1289,15 @@ async def next_question(scope: CurrentScope) -> QuestionOut:
         try:
             return await _ask_next(db, scope, stored, await _who(db, scope))
         except (SkillFailedError, LlmError) as exc:
-            raise _unusable(exc) from exc
+            # `keeps_progress=True`: both callers reach here *after* the answer
+            # that preceded the generation was committed in its own request — a
+            # resumed journey, or an `/answer`/`/discovery` whose generation
+            # failed once the turn was already stored. The default message,
+            # "Nothing was saved", tells the founder their answer was lost and
+            # invites them to retype it; everything up to this point is on the
+            # row, so the honest message is that it is kept and only the next
+            # question needs retrying.
+            raise _unusable(exc, keeps_progress=True) from exc
 
 
 @router.post("/answer", response_model=AnswerOut, dependencies=[Depends(require_csrf)])

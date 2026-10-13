@@ -825,6 +825,14 @@ async def test_a_provider_failure_in_discovery_degrades_instead_of_500(
             with pytest.raises(HTTPException) as caught:
                 await routes.next_question(scope)
             assert caught.value.status_code == status.HTTP_502_BAD_GATEWAY
+            # And it does not tell the founder their answer was lost: the
+            # discovery answer above is on the row, so the 502 keeps progress
+            # rather than claiming "Nothing was saved" and inviting a retype.
+            detail = cast(dict[str, Any], caught.value.detail)
+            assert "Nothing was saved" not in detail["message"], (
+                "the discovery answer is persisted; saying otherwise invites a retype"
+            )
+            assert "saved" in detail["message"], "it must say the answer so far is kept"
         finally:
             await _cleanup(db, user, ws)
 
