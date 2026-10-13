@@ -19,16 +19,6 @@
  * Both are `aria-hidden`. Every state either shows is also written in words
  * elsewhere on the screen — `globals.css` collapses animations to one iteration
  * under `prefers-reduced-motion`, and neither of these may be the only signal.
- *
- * **Colour comes from Tailwind utilities only (ADR 0066).** Every tone below is
- * a class name resolved against the `brand`/`clay`/`cloud` families in
- * `tailwind.config.ts` — never a literal hex in this file. The wash reuses
- * Tailwind's own gradient machinery (`from-*`/`to-*` write the
- * `--tw-gradient-stops` the arbitrary `radial-gradient(...)` shape reads) so the
- * colour is a standard utility and only the shape is custom; the mark uses the
- * `stroke-*`/`fill-*` utilities directly. `brand` carries work and the one
- * arrival; `clay` is kept for the single state that is a risk, a live
- * microphone; `cloud` is the neutral for waiting on the person.
  */
 
 export type AuraState =
@@ -41,26 +31,20 @@ export type AuraState =
   /** The Brain is live. */
   | 'ready'
 
-/**
- * The wash, as a background utility — a shapeless radial field, never a hex
- * literal. The shape is the one arbitrary value (`radial-gradient` is not a
- * Tailwind utility); the colour comes from `from-*`/`to-*`, which is, and which
- * is what writes the `--tw-gradient-stops` the shape reads.
- */
-const WASH: Record<AuraState, string> = {
-  thinking: 'from-brand-500/[0.16] to-transparent to-[72%]',
-  listening: 'from-clay-500/[0.16] to-transparent to-[72%]',
-  idle: 'from-cloud-500/[0.12] to-transparent to-[72%]',
-  ready: 'from-brand-500/20 to-transparent to-[72%]',
-}
-const WASH_SHAPE = 'bg-[radial-gradient(58rem_30rem_at_50%_-10rem,var(--tw-gradient-stops))]'
-
-/** The mark's ring and core, as `stroke-*`/`fill-*` utilities. */
-const TONE: Record<AuraState, { ring: string; core: string }> = {
-  thinking: { ring: 'stroke-brand-400', core: 'fill-brand-600' },
-  listening: { ring: 'stroke-clay-400', core: 'fill-clay-500' },
-  idle: { ring: 'stroke-cloud-300', core: 'fill-cloud-400' },
-  ready: { ring: 'stroke-brand-300', core: 'fill-brand-500' },
+const TONE: Record<AuraState, { core: string; ring: string; wash: string }> = {
+  // Working — the neutral grey the rest of the monochrome UI uses (ADR 0072).
+  thinking: { core: 'var(--c-grey-600)', ring: 'var(--c-grey-400)', wash: 'rgba(67,72,82,0.14)' },
+  // The one place a warning red appears: a microphone that looks like everything
+  // else is one somebody forgets is open.
+  listening: { core: 'var(--c-warn)', ring: 'var(--c-warn-soft)', wash: 'rgba(177,74,56,0.18)' },
+  idle: { core: 'var(--c-grey-400)', ring: 'var(--c-grey-300)', wash: 'rgba(138,144,154,0.12)' },
+  // The accent (logo blue), used once, for the only moment in the journey that
+  // is an arrival — the single spark.
+  ready: {
+    core: 'var(--accent-strong)',
+    ring: 'var(--accent)',
+    wash: 'color-mix(in srgb, var(--accent) 20%, transparent)',
+  },
 }
 
 /**
@@ -75,7 +59,10 @@ export function OnboardingAura({ state }: { state: AuraState }) {
   return (
     <div
       aria-hidden
-      className={`pointer-events-none fixed inset-0 -z-10 transition-[background] duration-1000 ${WASH_SHAPE} ${WASH[state]}`}
+      className="pointer-events-none fixed inset-0 -z-10 transition-[background] duration-1000"
+      style={{
+        background: `radial-gradient(58rem 30rem at 50% -10rem, ${TONE[state].wash}, transparent 72%)`,
+      }}
     />
   )
 }
@@ -113,11 +100,12 @@ export function PresenceMark({
         cy="16"
         r="14"
         fill="none"
+        stroke={tone.ring}
         strokeOpacity={active ? 0.85 : 0.4}
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeDasharray="5 6.3"
-        className={`animate-spin-slow ${tone.ring}`}
+        className="animate-spin-slow"
         style={{
           transformOrigin: 'center',
           animationDuration: active ? '3.2s' : '0s',
@@ -132,15 +120,16 @@ export function PresenceMark({
         cy="16"
         r="9"
         fill="none"
+        stroke={tone.ring}
         strokeOpacity="0.5"
         strokeWidth="1.5"
-        className={`animate-pulse-ring ${tone.ring}`}
+        className="animate-pulse-ring"
         style={{
           transformOrigin: 'center',
           animationPlayState: active ? 'running' : 'paused',
         }}
       />
-      <circle cx="16" cy="16" r="5.5" fillOpacity={active ? 1 : 0.75} className={tone.core} />
+      <circle cx="16" cy="16" r="5.5" fill={tone.core} fillOpacity={active ? 1 : 0.75} />
     </svg>
   )
 }

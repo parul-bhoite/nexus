@@ -33,10 +33,20 @@ class WeakPasswordError(ValueError):
 
 
 def validate_password(password: str) -> None:
+    """Fail closed on anything that does not meet the policy.
+
+    The complexity rules (one capital, one number) are mirrored by the browser in
+    `lib/auth-client.ts` so the form can say so first, but they are enforced here
+    — the client check is a courtesy, this is the authority.
+    """
     if len(password) < MIN_PASSWORD_LENGTH:
         raise WeakPasswordError(f"Password must be at least {MIN_PASSWORD_LENGTH} characters.")
     if len(password) > MAX_PASSWORD_LENGTH:
         raise WeakPasswordError(f"Password must be at most {MAX_PASSWORD_LENGTH} characters.")
+    if not any(c.isupper() for c in password):
+        raise WeakPasswordError("Password must contain at least one capital letter.")
+    if not any(c.isdigit() for c in password):
+        raise WeakPasswordError("Password must contain at least one number.")
 
 
 def hash_password(password: str) -> str:

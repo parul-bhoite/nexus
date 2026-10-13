@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
-import { NexusMark } from '@/components/ui/NexusMark'
+import { Logo } from '@/components/ui/Logo'
 
 /**
  * The last line of defence for a render that throws.
@@ -32,9 +32,9 @@ export default function Error({
   }, [error])
 
   return (
-    <main id="main" tabIndex={-1} className="theme-app flex min-h-screen flex-col px-6 py-8 sm:px-10">
-      <a href="/" className="w-fit" aria-label="NEXUS home">
-        <NexusMark />
+    <main id="main" tabIndex={-1} className="flex min-h-screen flex-col bg-bone-50 px-6 py-8 sm:px-10">
+      <a href="/" className="w-fit" aria-label="NEXUS OS home">
+        <Logo />
       </a>
 
       <div className="flex flex-1 items-center">
@@ -42,17 +42,17 @@ export default function Error({
           <p className="font-mono text-2xs uppercase tracking-[0.14em] text-clay-600">
             Something broke
           </p>
-          <h1 className="mt-3 font-sans text-title font-semibold text-cloud-900">
+          <h1 className="mt-3 font-display text-title font-medium text-ink-900">
             This page didn&rsquo;t load
           </h1>
-          <p className="mt-3 text-[0.95rem] leading-relaxed text-cloud-600">
+          <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-600">
             The fault is ours, not yours, and nothing you entered was lost. Try again
             &mdash; if it keeps happening, the reference below will let us find it.
           </p>
 
           {error.digest ? (
-            <p className="mt-5 font-mono text-xs text-cloud-500">
-              Reference: <span className="text-cloud-800">{error.digest}</span>
+            <p className="mt-5 font-mono text-xs text-ink-500">
+              Reference: <span className="text-ink-800">{error.digest}</span>
             </p>
           ) : null}
 

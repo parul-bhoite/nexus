@@ -54,14 +54,14 @@ export function Figure({
   return (
     <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
       <span
-        className={`tnum font-sans font-semibold leading-none ${
+        className={`tnum font-display leading-none ${
           size === 'lg' ? 'text-figure' : 'text-figure-sm'
-        } ${tone === 'muted' ? 'text-cloud-400' : 'text-cloud-900'}`}
+        } ${tone === 'muted' ? 'text-ink-400' : 'text-ink-900'}`}
       >
         {value}
       </span>
-      {unit ? <span className="text-body text-cloud-500">{unit}</span> : null}
-      {qualifier ? <span className="text-meta text-cloud-500">{qualifier}</span> : null}
+      {unit ? <span className="text-body text-ink-500">{unit}</span> : null}
+      {qualifier ? <span className="text-meta text-ink-500">{qualifier}</span> : null}
     </p>
   )
 }
@@ -82,20 +82,20 @@ export function NoFigure({ because }: { because: ReactNode }) {
     <p className="flex items-baseline gap-2.5">
       <span
         aria-hidden="true"
-        className="shrink-0 font-sans text-figure leading-none text-cloud-300"
+        className="shrink-0 font-display text-figure leading-none text-ink-200"
       >
         —
       </span>
-      <span className="min-w-0 flex-1 text-meta leading-relaxed text-cloud-600">{because}</span>
+      <span className="min-w-0 flex-1 text-meta leading-relaxed text-ink-600">{because}</span>
     </p>
   )
 }
 
 const DOT_TONES = {
-  attention: 'bg-brand-500',
+  attention: 'bg-gold-500',
   warn: 'bg-clay-500',
-  quiet: 'bg-cloud-300',
-  good: 'bg-azure-500',
+  quiet: 'bg-ink-200',
+  good: 'bg-steel-500',
 } as const
 
 /**
@@ -148,11 +148,11 @@ export function Badge({
   className?: string
 }) {
   const tones = {
-    quiet: 'bg-cloud-100 text-cloud-600',
-    attention: 'bg-brand-50 text-brand-700',
+    quiet: 'bg-bone-200 text-ink-600',
+    attention: 'bg-gold-200 text-gold-700',
     warn: 'bg-clay-100 text-clay-600',
-    good: 'bg-azure-100 text-azure-700',
-    outline: 'border border-cloud-300 text-cloud-500',
+    good: 'bg-steel-100 text-steel-700',
+    outline: 'border border-ink-200 text-ink-500',
   }
   return (
     <span
@@ -181,8 +181,8 @@ export function Facts({
     <dl className={`grid gap-x-4 gap-y-2 sm:grid-cols-[minmax(0,10rem)_1fr] ${className}`}>
       {items.map((item) => (
         <div key={item.key} className="contents">
-          <dt className="text-meta text-cloud-500">{item.term}</dt>
-          <dd className="text-meta leading-relaxed text-cloud-700">{item.value}</dd>
+          <dt className="text-meta text-ink-500">{item.term}</dt>
+          <dd className="text-meta leading-relaxed text-ink-700">{item.value}</dd>
         </div>
       ))}
     </dl>
@@ -231,12 +231,12 @@ export function Table<Row>({
       <table className="w-full border-collapse text-left">
         <caption className="sr-only">{caption}</caption>
         <thead className="hidden md:table-header-group">
-          <tr className="border-b border-cloud-200 bg-cloud-50">
+          <tr className="border-b border-ink-100 bg-bone-50">
             {columns.map((c) => (
               <th
                 key={c.key}
                 scope="col"
-                className={`px-4 py-2.5 text-2xs font-medium uppercase tracking-[0.08em] text-cloud-500 ${
+                className={`px-4 py-2.5 text-2xs font-medium uppercase tracking-[0.08em] text-ink-500 ${
                   c.align === 'end' || c.numeric ? 'text-right' : ''
                 }`}
               >
@@ -249,21 +249,21 @@ export function Table<Row>({
           {rows.map((row) => (
             <tr
               key={rowKey(row)}
-              className="flex flex-col gap-1 border-b border-cloud-200 px-4 py-3 last:border-0 transition-colors duration-micro ease-out md:table-row md:px-0 md:py-0 md:hover:bg-cloud-50"
+              className="flex flex-col gap-1 border-b border-ink-100 px-4 py-3 last:border-0 transition-colors duration-micro ease-out md:table-row md:px-0 md:py-0 md:hover:bg-bone-50"
             >
               {columns.map((c) => (
                 <td
                   key={c.key}
                   data-label={typeof c.header === 'string' ? c.header : undefined}
                   className={[
-                    'text-body text-cloud-700 md:px-4 md:py-3',
+                    'text-body text-ink-700 md:px-4 md:py-3',
                     c.numeric ? 'tnum md:text-right' : '',
                     c.align === 'end' ? 'md:text-right' : '',
                     c.minor ? 'hidden md:table-cell' : '',
                     // On a phone the header is printed before the value from
                     // `data-label`, which is what turns the row into a card
                     // without duplicating any markup.
-                    "before:mr-2 before:text-2xs before:uppercase before:tracking-[0.08em] before:text-cloud-400 before:content-[attr(data-label)] md:before:content-none",
+                    "before:mr-2 before:text-2xs before:uppercase before:tracking-[0.08em] before:text-ink-400 before:content-[attr(data-label)] md:before:content-none",
                   ].join(' ')}
                 >
                   {c.cell(row)}

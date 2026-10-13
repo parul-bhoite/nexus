@@ -169,7 +169,7 @@ function Head({ figure }: { figure: Figure }) {
           value={
             <>
               {figure.score}
-              <span className="text-cloud-300"> / {figure.max_score}</span>
+              <span className="text-ink-300"> / {figure.max_score}</span>
             </>
           }
           unit="points"
@@ -273,17 +273,17 @@ const REFUSAL: Record<string, string> = {
 function PrioritiesHead({ figure }: { figure: PrioritiesFigure }) {
   const row = (item: { kind_of: string; title: string; detail: string }, key: string) => (
     <li key={key} className="flex flex-wrap items-baseline gap-x-3 py-1.5">
-      <span className="w-20 shrink-0 text-2xs uppercase tracking-[0.08em] text-cloud-400">
+      <span className="w-20 shrink-0 text-2xs uppercase tracking-[0.08em] text-ink-400">
         {item.kind_of}
       </span>
-      <span className="min-w-0 grow text-body text-cloud-800">{item.title}</span>
+      <span className="min-w-0 grow text-body text-ink-800">{item.title}</span>
       <span className="shrink-0 text-2xs text-clay-600">{item.detail}</span>
     </li>
   )
 
   if (figure.overdue.length === 0 && figure.beside.length === 0) {
     return (
-      <p className="text-body leading-relaxed text-cloud-600">
+      <p className="text-body leading-relaxed text-ink-600">
         Nothing you have recorded is past its date. That is about what you have written
         down, not about everything you have on.
       </p>
@@ -293,17 +293,17 @@ function PrioritiesHead({ figure }: { figure: PrioritiesFigure }) {
   return (
     <div>
       {figure.overdue.length > 0 ? (
-        <ul className="divide-y divide-cloud-200">
+        <ul className="divide-y divide-ink-100">
           {figure.overdue.map((item, index) => row(item, `overdue-${index}`))}
         </ul>
       ) : null}
 
       {figure.beside.length > 0 ? (
         <>
-          <p className="mt-3 text-2xs uppercase tracking-[0.1em] text-cloud-400">
+          <p className="mt-3 text-2xs uppercase tracking-[0.1em] text-ink-400">
             Not measured in days
           </p>
-          <ul className="divide-y divide-cloud-200">
+          <ul className="divide-y divide-ink-100">
             {figure.beside.map((item, index) => row(item, `beside-${index}`))}
           </ul>
         </>
@@ -378,7 +378,7 @@ function Breakdown({ figure }: { figure: Figure }) {
     return (
       <ul className="flex flex-wrap gap-x-4 gap-y-1">
         {figure.inputs.map((input) => (
-          <li key={input.key} className="text-meta text-cloud-600">
+          <li key={input.key} className="text-meta text-ink-600">
             {input.name}
           </li>
         ))}
@@ -392,10 +392,10 @@ function Breakdown({ figure }: { figure: Figure }) {
     <dl className="flex flex-wrap gap-x-6 gap-y-2">
       {figure.breakdown.map((bucket) => (
         <div key={bucket.label}>
-          <dt className="text-2xs uppercase tracking-[0.08em] text-cloud-500">{bucket.label}</dt>
+          <dt className="text-2xs uppercase tracking-[0.08em] text-ink-500">{bucket.label}</dt>
           <dd
-            className={`tnum font-sans font-semibold text-figure-sm leading-none ${
-              bucket.count > 0 ? 'text-cloud-900' : 'text-cloud-300'
+            className={`tnum font-display text-figure-sm leading-none ${
+              bucket.count > 0 ? 'text-ink-900' : 'text-ink-300'
             }`}
           >
             {bucket.count}
@@ -431,8 +431,8 @@ function Vouched({ figure }: { figure: Figure }) {
 /** What this measures and what it deliberately does not. */
 function Measures({ figure }: { figure: Figure }) {
   return (
-    <p className="max-w-read text-meta leading-relaxed text-cloud-600">
-      <span className="font-medium text-cloud-700">{figure.label}.</span> {figure.measures}
+    <p className="max-w-read text-meta leading-relaxed text-ink-600">
+      <span className="font-medium text-ink-700">{figure.label}.</span> {figure.measures}
     </p>
   )
 }
@@ -476,7 +476,7 @@ function Notes({ figure }: { figure: Figure }) {
             href={figure.source_url}
             target="_blank"
             rel="noreferrer noopener"
-            className="break-all underline decoration-cloud-300 underline-offset-2 hover:text-cloud-900"
+            className="break-all underline decoration-ink-300 underline-offset-2 hover:text-ink-900"
           >
             {figure.source_url}
           </a>
@@ -551,7 +551,7 @@ function Notes({ figure }: { figure: Figure }) {
   if (rows.length === 0) return null
 
   return (
-    <div className="flex flex-col gap-1 text-2xs leading-relaxed text-cloud-400">
+    <div className="flex flex-col gap-1 text-2xs leading-relaxed text-ink-400">
       {rows.map((row) => (
         <p key={row.key} className="max-w-read">
           {row.value}
@@ -601,20 +601,20 @@ function Arithmetic({ figure }: { figure: Figure }) {
 
   if (figure.kind === 'score') {
     return (
-      <ul className="divide-y divide-cloud-200">
+      <ul className="divide-y divide-ink-100">
         {figure.checks.map((check) => (
           <li key={check.id} className="flex flex-wrap gap-x-3 gap-y-1 py-2">
             <span
               className={`tnum shrink-0 text-2xs uppercase tracking-[0.08em] ${
-                check.passed ? 'text-brand-600' : 'text-cloud-400'
+                check.passed ? 'text-steel-600' : 'text-ink-400'
               }`}
             >
               {check.passed ? `+${check.weight}` : `0 / ${check.weight}`}
             </span>
             <span className="min-w-0 grow">
-              <span className="text-meta text-cloud-800">{check.label}</span>
+              <span className="text-meta text-ink-800">{check.label}</span>
               {/* The calculator's own words. An observation, never advice. */}
-              <span className="mt-0.5 block text-meta text-cloud-500">{check.evidence}</span>
+              <span className="mt-0.5 block text-meta text-ink-500">{check.evidence}</span>
             </span>
           </li>
         ))}
@@ -628,8 +628,8 @@ function Arithmetic({ figure }: { figure: Figure }) {
 function Line({ head, body }: { head: string; body: string }) {
   return (
     <p className="py-1 text-meta">
-      <span className="tnum text-cloud-800">{head}</span>
-      <span className="mt-0.5 block text-cloud-500">{body}</span>
+      <span className="tnum text-ink-800">{head}</span>
+      <span className="mt-0.5 block text-ink-500">{body}</span>
     </p>
   )
 }
@@ -658,16 +658,16 @@ function Working({
       summary={`${open ? '−' : '+'} why this number`}
       open={open}
       onOpenChange={setOpen}
-      className="mt-auto border-t border-cloud-200 pt-3"
+      className="mt-auto border-t border-ink-100 pt-3"
     >
-      <div className="flex flex-col gap-3 rounded-data bg-cloud-50 px-4 py-3.5">
+      <div className="flex flex-col gap-3 rounded-data bg-bone-50 px-4 py-3.5">
         <Arithmetic figure={figure} />
 
         {/* The identifiers. Moved here from the face of the card: they exist so
             a tile on a screen can be traced back to the paragraph that specified
             it, which is a need of somebody debugging the product rather than of
             somebody running a business — and that person is already in here. */}
-        <div className="flex flex-wrap items-center gap-2 border-t border-cloud-200 pt-3 text-2xs text-cloud-400">
+        <div className="flex flex-wrap items-center gap-2 border-t border-ink-100 pt-3 text-2xs text-ink-400">
           <span className="font-mono">{figure.method}</span>
           {/* Which `SKILL.md` wrote the sentence above, beside the arithmetic
               that produced the number. A disputed sentence should trace back to
@@ -717,7 +717,7 @@ const WORTH_RETRYING: ReadonlySet<string> = new Set([
  * wording change has to reach every surface, and a screen must not be able to
  * ship with the space drawn and the copy forgotten.
  *
- * Refusals render in `text-cloud-500`, not `text-clay-600`. This file reserves
+ * Refusals render in `text-ink-500`, not `text-clay-600`. This file reserves
  * clay for calls to action about the *data*, and a refusal about the
  * *explanation* is not one — the number beside it is fine and must not start
  * reading as though it were in doubt.
@@ -792,7 +792,7 @@ function Explanation({
   return (
     <div className="flex flex-col gap-2">
       {narration ? (
-        <p className="max-w-read text-body leading-relaxed text-cloud-700">{narration.prose}</p>
+        <p className="max-w-read text-body leading-relaxed text-ink-700">{narration.prose}</p>
       ) : null}
 
       {superseded ? (
@@ -902,7 +902,7 @@ function Consequence({ block }: { block: DirectorBlock }) {
  */
 function Identifiers({ block }: { block: DirectorBlock }) {
   return (
-    <p className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 pt-1 text-2xs text-cloud-300">
+    <p className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 pt-1 text-2xs text-ink-300">
       {/* Absent for the thirteen capabilities doc 08 specified and doc 05 never
           did. An empty reference would be a label pointing at no paragraph. */}
       {block.doc05_id ? <span className="tracking-[0.1em]">{block.doc05_id}</span> : null}
@@ -935,13 +935,13 @@ export function BlockCard({
   return (
     <li
       className={`flex flex-col gap-3 rounded-data border px-5 py-5 shadow-e1 transition-[border-color,box-shadow] duration-base ease-out hover:shadow-e2 ${
-        dimmed ? 'border-cloud-200 bg-cloud-50' : 'border-cloud-200 bg-white'
+        dimmed ? 'border-ink-100 bg-bone-50' : 'border-ink-100 bg-white'
       }`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="text-card font-medium text-cloud-900">{block.name}</h3>
-          <p className="mt-0.5 text-meta leading-snug text-cloud-500">{block.shows}</p>
+          <h3 className="text-card font-medium text-ink-900">{block.name}</h3>
+          <p className="mt-0.5 text-meta leading-snug text-ink-500">{block.shows}</p>
         </div>
         {/* Nothing at all when the state is `live`. See `STATE_TONE`. */}
         <StateDot tone={STATE_TONE[block.state]} label={STATE_LABEL[block.state]} />
@@ -978,7 +978,7 @@ export function BlockCard({
         </>
       ) : (
         <>
-          <p className="text-meta leading-relaxed text-cloud-400">{KIND_PROMISE[block.block]}</p>
+          <p className="text-meta leading-relaxed text-ink-400">{KIND_PROMISE[block.block]}</p>
           <Consequence block={block} />
         </>
       )}

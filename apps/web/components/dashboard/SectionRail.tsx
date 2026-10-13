@@ -54,7 +54,7 @@ export function SectionRail({
   id?: string
 }) {
   return (
-    <div className="border-b border-cloud-200 pb-3">
+    <div className="border-b border-ink-100 pb-3">
       <Tabs
         label="Sections"
         active={active}

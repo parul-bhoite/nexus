@@ -140,24 +140,24 @@ export function DocumentsStep({
     stage !== null && uploaded.length >= stage.max_files_at_onboarding
 
   return (
-    <div className="app-card p-4">
-      <h2 className="font-sans text-lg font-semibold text-cloud-900">Now, a few of your own documents</h2>
-      <p className="mt-2 text-sm text-cloud-600">
+    <div className="rounded-2xl border border-bone-300 bg-white/90 p-4 backdrop-blur-sm">
+      <h2 className="font-display text-lg text-ink">Now, a few of your own documents</h2>
+      <p className="mt-2 text-sm text-ink-600">
         This is what makes an answer yours rather than generic. Nothing here is required — you can
         add these later, and the workspace will say what is still missing.
       </p>
 
       {stage?.departments.map((group) => (
         <div key={group.department} className="mt-4">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-cloud-400">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-400">
             {group.department}
           </p>
-          <ul className="mt-1.5 divide-y divide-cloud-200">
+          <ul className="mt-1.5 divide-y divide-bone-200">
             {group.asks.map((ask) => (
               <li key={ask.name} className="py-2">
-                <p className="text-sm font-medium text-cloud-900">{ask.name}</p>
+                <p className="text-sm font-medium text-ink">{ask.name}</p>
                 {/* What it turns on, never what it will find. */}
-                <p className="mt-0.5 text-xs text-cloud-400">{ask.unlocks}</p>
+                <p className="mt-0.5 text-xs text-ink-400">{ask.unlocks}</p>
               </li>
             ))}
           </ul>
@@ -168,15 +168,15 @@ export function DocumentsStep({
           sends `consent: true` and the API refuses it without — so this is the
           statement being made rather than a checkbox decorating one. */}
       {stage && (
-        <p className="mt-4 border-l-2 border-brand-400 pl-2 text-[11px] leading-snug text-cloud-400">
+        <p className="mt-4 border-l-2 border-gold pl-2 text-[11px] leading-snug text-ink-400">
           {stage.consent.text}
         </p>
       )}
 
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <label
-          className={`app-btn-ghost cursor-pointer rounded-full ${
-            disabled || atLimit ? 'pointer-events-none opacity-50' : ''
+          className={`cursor-pointer rounded-full border border-ink px-5 py-2 text-sm font-medium text-ink ${
+            disabled || atLimit ? 'pointer-events-none opacity-50' : 'hover:bg-bone-100'
           }`}
         >
           <input
@@ -193,7 +193,7 @@ export function DocumentsStep({
         </label>
 
         {stage && (
-          <span className="text-xs text-cloud-400">
+          <span className="text-xs text-ink-400">
             Up to {stage.max_files_at_onboarding} files now, {megabytes(stage.max_file_bytes)} each
             {uploaded.length > 0 && ` · ${uploaded.length} added`}
           </span>
@@ -201,17 +201,17 @@ export function DocumentsStep({
       </div>
 
       {busy.length > 0 && (
-        <p className="mt-3 text-xs text-cloud-400" role="status">
+        <p className="mt-3 text-xs text-ink-400" role="status">
           Reading {busy.join(', ')}…
         </p>
       )}
 
       {uploaded.length > 0 && (
-        <ul className="mt-3 divide-y divide-cloud-200">
+        <ul className="mt-3 divide-y divide-bone-200">
           {uploaded.map((doc) => (
             <li key={doc.document_id} className="flex items-baseline justify-between gap-3 py-2">
-              <span className="min-w-0 truncate text-sm text-cloud-900">{doc.filename}</span>
-              <span className="shrink-0 text-xs text-cloud-400">
+              <span className="min-w-0 truncate text-sm text-ink">{doc.filename}</span>
+              <span className="shrink-0 text-xs text-ink-400">
                 {doc.status === 'indexed'
                   ? doc.page_count
                     ? `${doc.page_count} pages`
@@ -239,7 +239,7 @@ export function DocumentsStep({
         // Said here rather than discovered later. Default-deny classification
         // (I4) withholds a chunk it is unsure about, and a person who is not
         // told will read the gap as the document not having been read at all.
-        <p className="mt-3 text-xs text-cloud-400">
+        <p className="mt-3 text-xs text-ink-400">
           {held} passage{held === 1 ? '' : 's'} held for your review — anything sensitive waits for
           you rather than being indexed on a guess.
         </p>
@@ -256,7 +256,7 @@ export function DocumentsStep({
           type="button"
           disabled={disabled || busy.length > 0}
           onClick={() => onContinue(indexed === 0)}
-          className="app-btn rounded-full"
+          className="rounded-full bg-ink px-5 py-2 text-sm font-medium text-bone-50 disabled:opacity-50"
         >
           {indexed > 0 ? 'Continue' : 'Skip for now'}
         </button>
@@ -265,7 +265,7 @@ export function DocumentsStep({
             type="button"
             disabled={disabled || busy.length > 0}
             onClick={() => onContinue(true)}
-            className="text-sm text-cloud-400 underline decoration-cloud-200 underline-offset-4 hover:text-cloud-600 disabled:opacity-50"
+            className="text-sm text-ink-400 underline decoration-bone-300 underline-offset-4 hover:text-ink-600 disabled:opacity-50"
           >
             Skip the rest
           </button>

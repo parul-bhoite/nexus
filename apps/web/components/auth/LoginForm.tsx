@@ -72,7 +72,12 @@ export function LoginForm() {
       await login(email.trim(), password)
       // Replace rather than push: the sign-in page should not sit in history
       // behind an authenticated page, where Back would show a stale form.
-      router.replace(next ?? '/account')
+      //
+      // Default to the dashboard, which is the workspace landing and also the
+      // onboarding gate: if setup is unfinished it forwards to
+      // `/onboarding/agent`, which resumes at the last incomplete step (ADR
+      // 0075). A `next` is still honoured first for deep links.
+      router.replace(next ?? '/dashboard')
     } catch (error) {
       const message =
         error instanceof AuthError
@@ -90,7 +95,7 @@ export function LoginForm() {
       {justReset && state.status !== 'error' ? (
         <div
           role="status"
-          className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-700"
+          className="rounded-xl border border-steel-300 bg-steel-100 px-4 py-3 text-sm text-steel-700"
         >
           Your password is set. Sign in with it — you were signed out everywhere, which is what
           makes a reset worth doing.
@@ -130,7 +135,7 @@ export function LoginForm() {
 
       <Link
         href="/forgot-password"
-        className="-mt-2 w-fit text-sm font-medium text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700"
+        className="-mt-2 w-fit text-sm font-medium text-steel-600 underline decoration-steel-300 underline-offset-2 hover:text-steel-700"
       >
         Forgot your password?
       </Link>

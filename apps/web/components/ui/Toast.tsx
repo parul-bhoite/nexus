@@ -133,12 +133,12 @@ function ToastRow({ toast, onDismiss }: { toast: Toast; onDismiss: () => void })
       onMouseLeave={() => setHeld(false)}
       onFocusCapture={() => setHeld(true)}
       onBlurCapture={() => setHeld(false)}
-      className="pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-data border border-cloud-700 bg-cloud-900 px-4 py-3 text-white shadow-e3"
+      className="pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-data border border-ink-700 bg-ink-800 px-4 py-3 text-bone-50 shadow-e3"
     >
       <span
         aria-hidden="true"
         className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${
-          toast.tone === 'warn' ? 'bg-clay-400' : 'bg-azure-400'
+          toast.tone === 'warn' ? 'bg-gold-400' : 'bg-steel-300'
         }`}
       />
       <p className="flex-1 text-meta leading-relaxed">{toast.message}</p>
@@ -150,7 +150,7 @@ function ToastRow({ toast, onDismiss }: { toast: Toast; onDismiss: () => void })
             toast.action?.onClick()
             onDismiss()
           }}
-          className="shrink-0 rounded-[0.35rem] text-meta font-medium text-azure-300 underline decoration-azure-300/40 underline-offset-2 transition-colors duration-micro hover:text-azure-200 focus-visible:ring-2 focus-visible:ring-azure-400 focus-visible:ring-offset-2 focus-visible:ring-offset-cloud-900"
+          className="shrink-0 rounded-[0.35rem] text-meta font-medium text-gold-300 underline decoration-gold-300/40 underline-offset-2 transition-colors duration-micro hover:text-gold-200 focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-800"
         >
           {toast.action.label}
         </button>
@@ -160,7 +160,7 @@ function ToastRow({ toast, onDismiss }: { toast: Toast; onDismiss: () => void })
         type="button"
         onClick={onDismiss}
         aria-label="Dismiss"
-        className="-my-1 -mr-1.5 shrink-0 rounded-[0.35rem] p-1.5 text-cloud-400 transition-colors duration-micro hover:text-white focus-visible:ring-2 focus-visible:ring-azure-400 focus-visible:ring-offset-2 focus-visible:ring-offset-cloud-900"
+        className="-my-1 -mr-1.5 shrink-0 rounded-[0.35rem] p-1.5 text-slate-300 transition-colors duration-micro hover:text-bone-50 focus-visible:ring-2 focus-visible:ring-gold-300 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-800"
       >
         <svg viewBox="0 0 14 14" fill="none" aria-hidden="true" className="h-3.5 w-3.5">
           <path d="m3.5 3.5 7 7m0-7-7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

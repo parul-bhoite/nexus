@@ -156,8 +156,8 @@ export function Tabs({
             // Tab, and the arrows move within.
             tabIndex={current ? 0 : -1}
             onClick={() => onChange(tab.key)}
-            className={`relative shrink-0 rounded-full px-3.5 py-2 text-meta font-medium transition-colors duration-base ease-out focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 ${
-              current ? 'text-white' : 'text-cloud-600 hover:bg-cloud-100 hover:text-cloud-900'
+            className={`relative shrink-0 rounded-full px-3.5 py-2 text-meta font-medium transition-colors duration-base ease-out focus-visible:ring-2 focus-visible:ring-steel-500 focus-visible:ring-offset-2 ${
+              current ? 'text-bone-50' : 'text-ink-600 hover:bg-bone-200 hover:text-ink-900'
             }`}
           >
             {current ? (
@@ -165,13 +165,13 @@ export function Tabs({
                 layoutId={`${group}-indicator`}
                 transition={safe ? spring.indicator : { duration: 0 }}
                 aria-hidden="true"
-                className="absolute inset-0 -z-10 rounded-full bg-brand-500"
+                className="absolute inset-0 -z-10 rounded-full bg-ink-800"
               />
             ) : null}
             <span className="relative">{tab.label}</span>
             {typeof tab.count === 'number' ? (
               <span
-                className={`relative ml-1.5 tnum text-2xs ${current ? 'text-brand-100' : 'text-cloud-400'}`}
+                className={`relative ml-1.5 tnum text-2xs ${current ? 'text-slate-300' : 'text-ink-400'}`}
               >
                 {tab.count}
               </span>

@@ -61,7 +61,8 @@ type NavGroup = { key: string; label: string; items: NavItem[] }
  * Every destination is a route that exists.
  *
  * `doc/14` sketched a *Your data* group of four — Company Brain, Documents,
- * Connections, Your answers. Only one of those is a page today; the rest are
+ * Connections, Your answers. Company Brain is now a real page (ADR 0069
+ * phase 2) rather than the dashboard glance panel alone; the rest are still
  * panels inside setup and settings. A nav entry pointing at a route nobody
  * built is a 404 with a friendly name, so the group holds what is real and
  * grows when the pages do.
@@ -90,6 +91,11 @@ export function groupsFor(all: Dashboards | null): NavGroup[] {
       label: 'Your data',
       items: [
         { href: '/work', label: 'Your work', hint: 'Projects and tasks' },
+        {
+          href: '/brain',
+          label: 'Company Brain',
+          hint: 'Everything NEXUS knows, and where it came from',
+        },
         { href: '/documents', label: 'Your documents', hint: 'What NEXUS has read' },
         // Listed unconditionally, with no count. A badge would need the queue
         // fetched on every page to render the nav, and an *absent* badge would
@@ -141,7 +147,7 @@ export function NavPanel({
       {groupsFor(all).map((group) => (
         <div key={group.key}>
           {group.label ? (
-            <p className="mb-1.5 px-3 text-2xs font-medium uppercase tracking-[0.1em] text-cloud-400">
+            <p className="mb-1.5 px-3 text-2xs font-medium uppercase tracking-[0.1em] text-ink-400">
               {group.label}
             </p>
           ) : null}
@@ -156,10 +162,10 @@ export function NavPanel({
                     aria-current={current ? 'page' : undefined}
                     // 44px minimum. The old rows were 38px and the mobile menu
                     // button 56×30, both under every platform's touch floor.
-                    className={`group flex min-h-[2.75rem] items-center gap-2 rounded-control border-l-2 px-3 py-2 text-body transition-colors duration-base ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
+                    className={`group flex min-h-[2.75rem] items-center gap-2 rounded-control px-3 py-2 text-body transition-colors duration-base ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-steel-500 focus-visible:ring-offset-2 focus-visible:ring-offset-bone-50 ${
                       current
-                        ? 'border-brand-500 bg-brand-50 font-medium text-brand-700'
-                        : 'border-transparent text-cloud-600 hover:bg-cloud-50 hover:text-cloud-900'
+                        ? 'bg-ink-800 font-medium text-bone-50'
+                        : 'text-ink-600 hover:bg-bone-200 hover:text-ink-900'
                     }`}
                   >
                     <span className="min-w-0 flex-1">
@@ -167,7 +173,7 @@ export function NavPanel({
                       {item.hint ? (
                         <span
                           className={`block truncate text-2xs ${
-                            current ? 'text-brand-500' : 'text-cloud-400'
+                            current ? 'text-slate-300' : 'text-ink-400'
                           }`}
                         >
                           {item.hint}
@@ -181,7 +187,7 @@ export function NavPanel({
                     {item.count ? (
                       <span
                         className={`tnum shrink-0 rounded-full px-1.5 py-0.5 text-2xs font-medium ${
-                          current ? 'bg-brand-100 text-brand-700' : 'bg-cloud-100 text-cloud-500'
+                          current ? 'bg-ink-700 text-slate-300' : 'bg-bone-200 text-ink-500'
                         }`}
                       >
                         {item.count}

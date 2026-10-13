@@ -48,14 +48,14 @@ function Fact({ fact }: { fact: SetupFact }) {
   const said = when(fact.answered_at)
 
   return (
-    <li className="border-t border-cloud-200 py-4 first:border-t-0 first:pt-0">
-      <p className="text-sm text-cloud-500">{fact.question}</p>
+    <li className="border-t border-ink-100 py-4 first:border-t-0 first:pt-0">
+      <p className="text-sm text-ink-500">{fact.question}</p>
       {/* Quoted, not tabulated. The quotation marks are the treatment: they say
           this is somebody's sentence rather than a figure we stand behind. */}
-      <blockquote className="mt-1.5 text-[1.05rem] leading-relaxed text-cloud-900">
+      <blockquote className="mt-1.5 text-[1.05rem] leading-relaxed text-ink-900">
         &ldquo;{fact.answer}&rdquo;
       </blockquote>
-      <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-cloud-400">
+      <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink-400">
         {said ? <span>You, {said}</span> : <span>You</span>}
         <span className="font-mono text-2xs tracking-[0.04em]">reads it: {fact.reads_it}</span>
       </p>
@@ -67,18 +67,18 @@ function Watch({ item }: { item: WatchItem }) {
   const said = when(item.answered_at)
 
   return (
-    <li className="app-card flex flex-col px-5 py-5">
-      <h3 className="font-sans text-lg font-semibold leading-snug text-cloud-900">{item.label}</h3>
+    <li className="flex flex-col rounded-2xl border border-ink-100 bg-white px-5 py-5 shadow-paper">
+      <h3 className="font-display text-lg leading-snug text-ink-900">{item.label}</h3>
 
-      <blockquote className="mt-2 text-[0.95rem] leading-relaxed text-cloud-800">
+      <blockquote className="mt-2 text-[0.95rem] leading-relaxed text-ink-800">
         &ldquo;{item.stated}&rdquo;
       </blockquote>
-      <p className="mt-1.5 text-sm text-cloud-400">{said ? `You, ${said}` : 'You'}</p>
+      <p className="mt-1.5 text-sm text-ink-400">{said ? `You, ${said}` : 'You'}</p>
 
       {/* The bridge from what they said to what we will check. Without this a
           watch card is their worry quoted back at them with our logo on it. */}
-      <p className="mt-4 border-t border-cloud-200 pt-3 text-sm leading-relaxed text-cloud-600">
-        <span className="font-mono text-2xs uppercase tracking-[0.1em] text-cloud-400">
+      <p className="mt-4 border-t border-ink-100 pt-3 text-sm leading-relaxed text-ink-600">
+        <span className="font-mono text-2xs uppercase tracking-[0.1em] text-ink-400">
           What will test it
         </span>
         <br />
@@ -101,20 +101,20 @@ export function NotAskedPanel({ entries }: { entries: NotAsked[] }) {
   if (entries.length === 0) return null
 
   return (
-    <section className="app-sunken mt-8 px-5 py-5">
-      <p className="font-mono text-2xs uppercase tracking-[0.12em] text-cloud-400">
+    <section className="mt-8 rounded-2xl border border-ink-100 bg-bone-50 px-5 py-5">
+      <p className="font-mono text-2xs uppercase tracking-[0.12em] text-ink-400">
         What we will not ask you for
       </p>
-      <p className="mt-2 max-w-prose text-[0.95rem] leading-relaxed text-cloud-600">
+      <p className="mt-2 max-w-prose text-[0.95rem] leading-relaxed text-ink-600">
         These are measurements, not judgements. Asking you to type them would get a
         number you half-remember, and the point of this product is that every figure
         traces to something.
       </p>
       <ul className="mt-4 flex flex-col gap-2">
         {entries.map((entry) => (
-          <li key={entry.what} className="text-[0.95rem] leading-relaxed text-cloud-800">
+          <li key={entry.what} className="text-[0.95rem] leading-relaxed text-ink-800">
             {entry.what}
-            <span className="text-cloud-500"> — read from {entry.source}</span>
+            <span className="text-ink-500"> — read from {entry.source}</span>
           </li>
         ))}
       </ul>
@@ -183,7 +183,7 @@ export function SetupSection({
       // Empty because the question is unanswered, which is a fact about the
       // answers and not about our access. Inventing a risk to fill the tab
       // would be the product telling a founder what to worry about.
-      <p className="max-w-prose text-[0.95rem] leading-relaxed text-cloud-600">
+      <p className="max-w-prose text-[0.95rem] leading-relaxed text-ink-600">
         Nothing here yet. This department asked one question about what is currently
         going wrong, and it has not been answered — so there is nothing being watched
         rather than nothing to watch.
@@ -194,7 +194,7 @@ export function SetupSection({
   return (
     <>
       {facts.length > 0 ? (
-        <div className="app-card px-5 py-5">
+        <div className="rounded-2xl border border-ink-100 bg-white px-5 py-5 shadow-paper">
           <ul className="flex flex-col">
             {facts.map((fact) => (
               <Fact key={fact.key} fact={fact} />
@@ -202,7 +202,7 @@ export function SetupSection({
           </ul>
         </div>
       ) : (
-        <p className="max-w-prose text-[0.95rem] leading-relaxed text-cloud-600">
+        <p className="max-w-prose text-[0.95rem] leading-relaxed text-ink-600">
           Nobody has answered this department&rsquo;s questions yet. They are what turn
           its figures from generic into yours — a conversion rate needs your definition
           of a lead before it means anything.

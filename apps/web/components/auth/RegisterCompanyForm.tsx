@@ -16,6 +16,14 @@ import {
 } from '@/lib/auth-client'
 import { useSlowLabel } from '@/lib/slow'
 import { useAbortable } from '@/lib/hooks'
+import { looksLikeWebsite } from '@/lib/website-url'
+
+// Re-exported for backward compatibility: this used to be defined here, and
+// `components/onboarding/stages/CompanyStage.tsx` (the combined flow's company
+// stage, ADR 0067) now shares the same definition from `lib/website-url.ts`
+// rather than duplicating it. Kept as a re-export rather than updating every
+// import site, since this file's own test still imports it from here.
+export { looksLikeWebsite } from '@/lib/website-url'
 
 type State =
   | { status: 'idle' }
@@ -36,28 +44,6 @@ type State =
  * holds and the input the research run is queued against, so a company without
  * one is a company the product cannot begin to learn.
  */
-/** Whether the API will get something URL-shaped out of what was typed.
- *
- * **Deliberately permissive**, and not a second copy of the server's rule. The
- * API is authoritative: it supplies the implied `https://` and then parses.
- * This exists only so the ordinary typo is answered with the sentence beside
- * the button, rather than with a 422 whose message reached the screen verbatim
- * as pydantic wrote it — "Input should be a valid URL, relative URL without a
- * base", which tells a founder nothing about what to type.
- *
- * A false accept here costs nothing: the server still refuses it. A false
- * reject would block a legitimate address the server would have taken, so
- * anything with a dot and no whitespace passes — IDN and unusual TLDs
- * included.
- */
-export function looksLikeWebsite(value: string): boolean {
-  const host = value
-    .trim()
-    .replace(/^[a-z][a-z0-9+.-]*:\/\//i, '')
-    .split(/[/?#]/)[0]
-  return host.includes('.') && !host.startsWith('.') && !host.endsWith('.') && !/\s/.test(host)
-}
-
 export function RegisterCompanyForm() {
   const router = useRouter()
   const [name, setName] = useState('')
@@ -164,7 +150,7 @@ export function RegisterCompanyForm() {
   if (state.status === 'requested') {
     return (
       <div className="flex flex-col gap-4">
-        <p className="text-cloud-700">
+        <p className="text-ink-700">
           Your request is with that company&rsquo;s administrators. You will be able to sign in
           once somebody approves it.
         </p>
@@ -177,7 +163,7 @@ export function RegisterCompanyForm() {
       <div className="flex flex-col gap-6">
         <div
           role="status"
-          className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-cloud-800"
+          className="rounded-xl border border-gold-300 bg-gold-100 px-4 py-3 text-sm text-ink-800"
         >
           {state.offer.detail}
         </div>
@@ -301,7 +287,7 @@ export function RegisterCompanyForm() {
           options={departments}
         />
       </div>
-      <p className="-mt-2 text-sm text-cloud-500">
+      <p className="-mt-2 text-sm text-ink-500">
         Used to decide what NEXUS asks you and shows you first. It does not change what you
         are allowed to see — that comes from your membership of this workspace.
       </p>
@@ -309,11 +295,11 @@ export function RegisterCompanyForm() {
       {/* "In Settings" is now a link, because there is now a Settings
           (finding F3). This sentence, its twin on the page's intro and the
           API's own invitation refusal all named a screen that did not exist. */}
-      <p className="text-sm text-cloud-500">
+      <p className="text-sm text-ink-500">
         You can start straight away. Proving you own the domain happens in{' '}
         <Link
           href="/settings"
-          className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700"
+          className="font-medium text-steel-600 underline decoration-steel-300 underline-offset-2 hover:text-steel-700"
         >
           Settings
         </Link>

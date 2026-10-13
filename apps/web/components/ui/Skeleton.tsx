@@ -48,7 +48,7 @@ export function Bone({ className = '' }: { className?: string }) {
   return (
     <span
       aria-hidden="true"
-      className={`block animate-breathe rounded-[0.35rem] bg-cloud-100 ${className}`}
+      className={`block animate-breathe rounded-[0.35rem] bg-ink-100 ${className}`}
     />
   )
 }
@@ -114,7 +114,7 @@ export function BlockCardSkeleton() {
       </div>
       <Bone className="h-8 w-24" />
       <BoneText lines={2} />
-      <div className="mt-auto flex items-center gap-2 border-t border-cloud-200 pt-3">
+      <div className="mt-auto flex items-center gap-2 border-t border-ink-100 pt-3">
         <Bone className="h-3 w-28" />
       </div>
     </li>
@@ -142,13 +142,13 @@ export function TableSkeleton({
 }) {
   return (
     <div aria-hidden="true" className="surface overflow-hidden">
-      <div className="flex gap-4 border-b border-cloud-200 bg-cloud-50 px-4 py-2.5">
+      <div className="flex gap-4 border-b border-ink-100 bg-bone-50 px-4 py-2.5">
         {Array.from({ length: columns }, (_, i) => (
           <Bone key={i} className="h-2.5 flex-1" />
         ))}
       </div>
       {Array.from({ length: rows }, (_, r) => (
-        <div key={r} className="flex gap-4 border-b border-cloud-200 px-4 py-3 last:border-0">
+        <div key={r} className="flex gap-4 border-b border-ink-100 px-4 py-3 last:border-0">
           {Array.from({ length: columns }, (_, c) => (
             <Bone key={c} className={`h-3 flex-1 ${c === 0 ? 'max-w-[40%]' : ''}`} />
           ))}

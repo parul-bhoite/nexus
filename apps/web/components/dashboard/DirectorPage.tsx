@@ -211,25 +211,25 @@ function Ready({ director, all }: { director: Director; all: Dashboards | null }
           full-width banners. `unanswered` is `undefined` against an older API,
           which is why the check is a comparison and not a truthiness test: zero
           must only ever mean zero. */}
-      <aside className="app-card -mt-2 flex flex-col gap-2 px-4 py-3">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-meta text-cloud-600">
-          <span className="text-2xs uppercase tracking-[0.1em] text-cloud-400">{scoreNote}</span>
+      <aside className="-mt-2 flex flex-col gap-2 rounded-data border border-ink-100 bg-white px-4 py-3">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-meta text-ink-600">
+          <span className="text-2xs uppercase tracking-[0.1em] text-ink-400">{scoreNote}</span>
           {typeof unanswered === 'number' && unanswered > 0 ? (
             <span>
-              <strong className="tnum font-medium text-cloud-800">{unanswered}</strong> question
+              <strong className="tnum font-medium text-ink-800">{unanswered}</strong> question
               {unanswered === 1 ? '' : 's'} still unanswered here
             </span>
           ) : null}
           {measured > 0 ? (
             <span>
-              <strong className="tnum font-medium text-cloud-800">{measured}</strong>{' '}
+              <strong className="tnum font-medium text-ink-800">{measured}</strong>{' '}
               {measured === 1 ? 'capability produces' : 'capabilities produce'} a figure
             </span>
           ) : null}
         </div>
 
         <Disclosure summary="Why there is no single score for this department">
-          <div className="flex max-w-read flex-col gap-2 text-meta leading-relaxed text-cloud-600">
+          <div className="flex max-w-read flex-col gap-2 text-meta leading-relaxed text-ink-600">
             {/* The score's place, and it is absent rather than empty. A zero
                 would be a statement about the business instead of about the
                 data (I10), and a synthesis layer is never scored at all — which
@@ -322,7 +322,7 @@ function Ready({ director, all }: { director: Director; all: Dashboards | null }
             }`}
           >
             <div className="flex flex-col gap-4 pb-2">
-              <p className="max-w-read text-meta leading-relaxed text-cloud-600">
+              <p className="max-w-read text-meta leading-relaxed text-ink-600">
                 The specification describes {catalogue.length === 1 ? 'it' : 'them'} and these
                 screens do not draw {catalogue.length === 1 ? 'it' : 'them'} yet. They are
                 <strong> not</strong> waiting on anything you could connect — most are
@@ -351,8 +351,8 @@ function ChooseEntity() {
      for them risks acting in the wrong client's workspace, so they pick. */
   return (
     <div className="max-w-prose">
-      <h1 className="text-page text-cloud-900">Which company?</h1>
-      <p className="mt-3 text-body leading-relaxed text-cloud-600">
+      <h1 className="text-page text-ink-900">Which company?</h1>
+      <p className="mt-3 text-body leading-relaxed text-ink-600">
         You hold more than one, and nothing here is shared between them. Choosing is
         yours rather than ours — a dashboard opened in the wrong client&rsquo;s workspace
         is worse than one that asked.
@@ -367,11 +367,11 @@ function ChooseEntity() {
           lists the same companies and reports its own errors properly means
           the page can never be a dead end, whatever `EntitySwitcher` decided
           to render. */}
-      <p className="mt-4 text-sm text-cloud-500">
+      <p className="mt-4 text-sm text-ink-500">
         Not seeing your companies?{' '}
         <Link
           href="/settings"
-          className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700"
+          className="font-medium text-steel-600 underline decoration-steel-300 underline-offset-2 hover:text-steel-700"
         >
           Settings lists them
         </Link>

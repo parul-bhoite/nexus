@@ -56,17 +56,17 @@ export function ForgotPasswordForm() {
   if (state.status === 'sent') {
     return (
       <div className="flex flex-col gap-6">
-        <p className="text-cloud-700">
+        <p className="text-ink-700">
           If there is a NEXUS OS account for <strong>{email.trim()}</strong>, a reset link is on
           its way. It works once and expires in an hour.
         </p>
-        <p className="text-sm text-cloud-500">
+        <p className="text-sm text-ink-500">
           Nothing has been revealed about whether that address has an account — this message is
           the same either way.
         </p>
         <Link
           href="/login"
-          className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700"
+          className="font-medium text-steel-600 underline decoration-steel-300 underline-offset-2 hover:text-steel-700"
         >
           Back to sign in
         </Link>

@@ -85,8 +85,8 @@ export function Disclosure({
         aria-controls={id}
         className={`group flex w-full items-center gap-1.5 rounded-[0.35rem] text-meta font-medium transition-colors duration-micro ease-out ${
           tone === 'bordered'
-            ? 'justify-between border-b border-cloud-200 px-1 py-3 text-cloud-700 hover:text-cloud-900'
-            : 'text-cloud-500 hover:text-cloud-800'
+            ? 'justify-between border-b border-ink-100 px-1 py-3 text-ink-700 hover:text-ink-900'
+            : 'text-ink-500 hover:text-ink-800'
         }`}
       >
         <span>{summary}</span>

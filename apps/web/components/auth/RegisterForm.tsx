@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Field } from '@/components/auth/Field'
 import { ArrowRight, Button } from '@/components/ui/Button'
-import { AuthError, MIN_PASSWORD_LENGTH, login, register } from '@/lib/auth-client'
+import { AuthError, login, passwordProblem, register } from '@/lib/auth-client'
+import { useSlowLabel } from '@/lib/slow'
 
 type State =
   | { status: 'idle' }
@@ -21,10 +22,7 @@ type State =
 function blockedBy(email: string, password: string): string | undefined {
   if (email.trim() === '') return 'Enter your work email.'
   if (password === '') return 'Choose a password.'
-  if (password.length < MIN_PASSWORD_LENGTH) {
-    return `Your password needs at least ${MIN_PASSWORD_LENGTH} characters.`
-  }
-  return undefined
+  return passwordProblem(password)
 }
 
 export function RegisterForm() {
@@ -36,7 +34,16 @@ export function RegisterForm() {
   const [state, setState] = useState<State>({ status: 'idle' })
 
   const busy = state.status === 'submitting'
-  const tooShort = password !== '' && password.length < MIN_PASSWORD_LENGTH
+  // A cold Neon makes account creation a 30s+ wait; escalate the label rather
+  // than let the button sit on one word while the request rides out the 40s
+  // ceiling (SLOW_DB_TIMEOUT_MS).
+  const createLabel = useSlowLabel(
+    busy,
+    'Create account',
+    'Creating your account…',
+    'Still creating your account…',
+  )
+  const passwordHint = password !== '' ? passwordProblem(password) : undefined
   const reason = blockedBy(email, password)
 
   async function onSubmit(event: React.FormEvent) {
@@ -150,7 +157,7 @@ export function RegisterForm() {
           opens it by name. Asking afterwards would mean greeting somebody as
           "there" for the one exchange where it matters most. */}
       <Field
-        label="Your name"
+        label="What NEXUS should call you"
         value={fullName}
         onChange={setFullName}
         autoComplete="name"
@@ -177,7 +184,7 @@ export function RegisterForm() {
         autoComplete="new-password"
         disabled={busy}
         revealable
-        error={tooShort ? `${MIN_PASSWORD_LENGTH - password.length} more characters needed.` : undefined}
+        error={passwordHint}
       />
 
       {/* Optional, and labelled so. Nothing in the product is gated on it and
@@ -200,7 +207,7 @@ export function RegisterForm() {
         icon={busy ? undefined : <ArrowRight />}
         className="mt-1 w-full"
       >
-        {busy ? 'Creating your account…' : 'Create account'}
+        {createLabel}
       </Button>
 
       {/* No "Already have an account?" link here — finding F13. `AuthShell`

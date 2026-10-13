@@ -137,7 +137,7 @@ export function AcceptInvitation() {
         </Button>
       ) : (
         <div className="flex flex-col gap-3">
-          <p className="text-[0.95rem] text-cloud-700">
+          <p className="text-[0.95rem] text-ink-700">
             Sign in with the address the invitation was sent to, then open this link
             again.
           </p>
@@ -152,11 +152,11 @@ export function AcceptInvitation() {
         </div>
       )}
 
-      <p className="text-sm text-cloud-500">
+      <p className="text-sm text-ink-500">
         Not expecting this?{' '}
         <Link
           href="/"
-          className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700"
+          className="font-medium text-steel-600 underline decoration-steel-300 underline-offset-2 hover:text-steel-700"
         >
           Close it
         </Link>{' '}
@@ -178,11 +178,11 @@ function Panel({
   return (
     <div
       className={`rounded-2xl border px-5 py-5 ${
-        tone === 'warn' ? 'border-clay-300 bg-clay-100' : 'border-cloud-100 bg-white shadow-e1'
+        tone === 'warn' ? 'border-gold-300 bg-gold-100' : 'border-ink-100 bg-white shadow-paper'
       }`}
     >
-      <p className="font-sans font-semibold text-lg text-cloud-900">{title}</p>
-      <div className="mt-2 max-w-prose text-[0.95rem] leading-relaxed text-cloud-700">{children}</div>
+      <p className="font-display text-lg text-ink-900">{title}</p>
+      <div className="mt-2 max-w-prose text-[0.95rem] leading-relaxed text-ink-700">{children}</div>
     </div>
   )
 }

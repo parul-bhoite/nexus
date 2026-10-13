@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Button } from '@/components/ui/Button'
-import { NexusMark } from '@/components/ui/NexusMark'
+import { Logo } from '@/components/ui/Logo'
 
 export const metadata: Metadata = {
   title: 'Page not found',
@@ -22,21 +22,21 @@ export default function NotFound() {
        `mx-auto max-w-*` wrapper while `/account`, `/onboarding`, `/dashboard`
        and `/settings` all do. A 404 is often the first page somebody sees, and
        one laid out unlike the rest of the product reads as a different site. */
-    <main id="main" tabIndex={-1} className="theme-app min-h-screen">
+    <main id="main" tabIndex={-1} className="min-h-screen bg-bone-50">
       <div className="mx-auto flex min-h-screen max-w-3xl flex-col px-6 py-8 sm:px-10">
-        <a href="/" className="w-fit" aria-label="NEXUS home">
-          <NexusMark />
+        <a href="/" className="w-fit" aria-label="NEXUS OS home">
+          <Logo />
         </a>
 
         <div className="flex flex-1 items-center">
           <div className="w-full max-w-lg">
-            <p className="font-mono text-2xs uppercase tracking-[0.14em] text-cloud-400">
+            <p className="font-mono text-2xs uppercase tracking-[0.14em] text-ink-400">
               404
             </p>
-            <h1 className="mt-3 font-sans text-title font-semibold text-cloud-900">
+            <h1 className="mt-3 font-display text-title font-medium text-ink-900">
               There&rsquo;s nothing at this address
             </h1>
-            <p className="mt-3 text-[0.95rem] leading-relaxed text-cloud-600">
+            <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-600">
               The page may have moved, or the link may be wrong.
             </p>
 

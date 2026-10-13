@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { NexusMark } from '@/components/ui/NexusMark'
+import { Logo } from '@/components/ui/Logo'
 import { Button, ArrowRight } from '@/components/ui/Button'
 import { nav } from '@/lib/content'
 import { useActiveSection, useScrolled } from '@/lib/hooks'
@@ -46,7 +46,7 @@ export function Nav() {
         >
           <div className="shell-full flex h-[4.5rem] items-center justify-between gap-6">
             <a href="#top" className="shrink-0" aria-label={`${'NEXUS OS'} home`}>
-              <NexusMark />
+              <Logo />
             </a>
 
             <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">

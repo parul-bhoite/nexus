@@ -59,8 +59,8 @@ function Frame({
     tone === 'warn'
       ? 'bg-clay-100 text-clay-600'
       : tone === 'good'
-        ? 'bg-brand-50 text-brand-600'
-        : 'bg-cloud-100 text-cloud-500'
+        ? 'bg-steel-100 text-steel-700'
+        : 'bg-bone-200 text-ink-500'
 
   return (
     <div
@@ -70,15 +70,15 @@ function Frame({
       // it. `role="alert"` only on `warn`: `empty` and `good` are not
       // failures and do not need an assertive interruption.
       role={tone === 'warn' ? 'alert' : undefined}
-      className={`flex flex-col items-start gap-4 rounded-data border border-cloud-200 bg-white px-6 py-7 ${className}`}
+      className={`flex flex-col items-start gap-4 rounded-data border border-ink-100 bg-white px-6 py-7 ${className}`}
     >
       <span className={`flex h-10 w-10 items-center justify-center rounded-control ${tile}`}>
         {glyph}
       </span>
       <div className="flex flex-col gap-1.5">
-        <h3 className="text-card font-medium text-cloud-800">{title}</h3>
+        <h3 className="text-card font-medium text-ink-800">{title}</h3>
         {children ? (
-          <div className="max-w-read text-body leading-relaxed text-cloud-600">{children}</div>
+          <div className="max-w-read text-body leading-relaxed text-ink-600">{children}</div>
         ) : null}
       </div>
       {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}

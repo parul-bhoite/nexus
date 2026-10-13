@@ -34,7 +34,6 @@ import {
   PresenceMark,
   type AuraState,
 } from '@/components/onboarding/OnboardingAura'
-import { NexusMark } from '@/components/ui/NexusMark'
 
 /**
  * Guided onboarding: a conversation, a stack, and an arrival.
@@ -506,7 +505,7 @@ export function AgentOnboarding() {
        would paint over the aura, which sits at `-z-10` — above the page canvas
        and below in-flow content. With one set, the whole animated element
        rendered and was invisible. */
-    <div className="theme-app relative min-h-screen lg:grid lg:grid-cols-[21.5rem_minmax(0,1fr)]">
+    <div className="relative min-h-screen lg:grid lg:grid-cols-[21.5rem_minmax(0,1fr)]">
       <Rail
         state={state}
         sectionIndex={sectionIndex}
@@ -523,16 +522,16 @@ export function AgentOnboarding() {
           The width is a reading measure rather than a layout leftover: this is
           prose being read and prose being written, and a bubble that runs the
           width of a desktop monitor is neither. */}
-      <main id="main" tabIndex={-1} className="relative flex min-h-screen flex-col bg-cloud-50">
+      <main id="main" tabIndex={-1} className="relative flex min-h-screen flex-col bg-bone-100">
         {/* The phase, said the way a section of a product tour says itself: a
             small step count over a display-face title. The count is real —
             `phaseIndex` into the same array the rail draws — and `assembling`
             has no index by design, so it says "one moment" rather than
             inventing a step nobody pressed. */}
         <header className="mx-auto w-full max-w-3xl px-6 pt-10">
-          <p className="animate-fade-in font-mono text-[11px] uppercase tracking-[0.22em] text-cloud-400">
+          <p className="animate-fade-in font-mono text-[11px] uppercase tracking-[0.22em] text-ink-400">
             {`Step ${sectionIndex + 1} of ${SECTIONS.length}`}
-            <span className="text-cloud-300"> · {SECTIONS[sectionIndex].label}</span>
+            <span className="text-ink-300"> · {SECTIONS[sectionIndex].label}</span>
           </p>
           {/* Keyed on the *section*, not the phase, so the title holds still
               through the four phases that are one conversation. It used to be
@@ -545,7 +544,7 @@ export function AgentOnboarding() {
               title reading "let us get to know your company" over "I could not
               read nosuch.com" is the screen contradicting itself in the first
               two lines a person reads. */}
-          <h1 key={section} className="mt-1.5 animate-rise font-sans text-title font-semibold text-cloud-900">
+          <h1 key={section} className="mt-1.5 animate-rise font-display text-title text-ink">
             {state.phase === 'analysing' && state.site_unreadable
               ? 'Tell me about your company'
               : SECTION_TITLE[section]}
@@ -641,10 +640,10 @@ export function AgentOnboarding() {
               documents step below is what the person actually needs. */}
           {question?.done && question.reason && state.phase === 'documents' && (
             <AgentBubble>
-              <p className="text-sm text-cloud-700">
+              <p className="text-sm text-ink-600">
                 That is enough to build on. {sentence(question.reason)}
               </p>
-              <p className="mt-2 text-xs text-cloud-400">
+              <p className="mt-2 text-xs text-ink-400">
                 Everything else is a question your workspace can ask you later, when it has a
                 reason to.
               </p>
@@ -720,7 +719,7 @@ export function AgentOnboarding() {
                   type="button"
                   onClick={retry}
                   disabled={busy !== null}
-                  className="mt-2 rounded-control border border-clay-400 px-4 py-1.5 text-sm font-medium text-clay-600 hover:bg-clay-200 disabled:opacity-50"
+                  className="mt-2 rounded-full border border-clay-400 px-4 py-1.5 text-sm font-medium text-clay-600 hover:bg-clay-200 disabled:opacity-50"
                 >
                   Try again
                 </button>
@@ -790,10 +789,10 @@ function Rail({
   const initial = viewer?.name?.trim()?.[0]?.toUpperCase() ?? '\u00b7'
 
   return (
-    <aside className="z-10 flex flex-col border-b border-cloud-200 bg-white px-4 py-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r lg:px-7 lg:py-8">
-      <span className="flex items-center gap-2.5">
+    <aside className="z-10 flex flex-col border-b border-bone-200 bg-white px-4 py-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r lg:px-7 lg:py-8">
+      <span className="flex items-center gap-2.5 font-display text-base font-semibold text-ink">
         <PresenceMark state={aura} />
-        <NexusMark />
+        NEXUS <span className="font-normal opacity-60">OS</span>
       </span>
 
       {/* The rail opens by saying welcome, because it is the first thing on the
@@ -807,8 +806,8 @@ function Rail({
           same thing a few hundred pixels further down, personally, and that is
           the one worth keeping. */}
       <div className="mt-8 hidden animate-rise lg:block">
-        <h2 className="font-sans text-xl font-semibold text-cloud-900">Welcome to NEXUS OS.</h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-cloud-500">
+        <h2 className="font-display text-xl font-semibold text-ink">Welcome to NEXUS OS.</h2>
+        <p className="mt-1.5 text-sm leading-relaxed text-ink-400">
           A short conversation, and your workspace is built around your company — and you.
         </p>
       </div>
@@ -831,7 +830,7 @@ function Rail({
               // fill and a warm bar at its edge, so where-you-are reads from
               // across the room while done and upcoming stay quiet prose.
               className={`relative flex-1 animate-rise rounded-xl px-2.5 py-2 transition-colors duration-500 lg:flex-none lg:px-3 lg:py-2.5 ${
-                here ? 'bg-brand-50' : ''
+                here ? 'bg-bone-100' : ''
               }`}
               style={{ animationDelay: `${index * 70}ms` }}
             >
@@ -840,7 +839,7 @@ function Rail({
               {here && (
                 <span
                   aria-hidden
-                  className="absolute inset-x-2.5 bottom-0 h-[3px] rounded-full bg-brand-500 lg:inset-x-auto lg:-left-px lg:bottom-3 lg:top-3 lg:h-auto lg:w-[3px]"
+                  className="absolute inset-x-2.5 bottom-0 h-[3px] rounded-full bg-gold-500 lg:inset-x-auto lg:-left-px lg:bottom-3 lg:top-3 lg:h-auto lg:w-[3px]"
                 />
               )}
               <div className="flex items-center gap-2 lg:items-start lg:gap-3">
@@ -848,10 +847,10 @@ function Rail({
                   aria-hidden
                   className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl border transition-colors duration-500 lg:h-9 lg:w-9 ${
                     done
-                      ? 'border-brand-500 bg-brand-500 text-white'
+                      ? 'border-ink bg-ink text-bone-50'
                       : here
-                        ? 'border-brand-300 bg-white text-brand-600 shadow-e1'
-                        : 'border-cloud-200 bg-white text-cloud-300'
+                        ? 'border-gold-300 bg-white text-gold-600 shadow-paper'
+                        : 'border-bone-200 bg-white text-ink-300'
                   }`}
                 >
                   {done ? <CheckMark /> : <SectionGlyph section={section.key} />}
@@ -860,7 +859,7 @@ function Rail({
                   <p
                     aria-current={here ? 'step' : undefined}
                     className={`truncate text-xs font-medium transition-colors lg:text-sm ${
-                      here ? 'text-cloud-900' : done ? 'text-cloud-500' : 'text-cloud-300'
+                      here ? 'text-ink' : done ? 'text-ink-500' : 'text-ink-300'
                     }`}
                   >
                     {section.label}
@@ -870,7 +869,7 @@ function Rail({
                       on the canvas is saying the same thing in larger type. */}
                   <p
                     className={`mt-0.5 hidden text-xs lg:block ${
-                      here || done ? 'text-cloud-400' : 'text-cloud-300'
+                      here || done ? 'text-ink-400' : 'text-ink-300'
                     }`}
                   >
                     {section.hint}
@@ -882,7 +881,7 @@ function Rail({
                       because reading a website is not a countable quantity and
                       a fraction over it would be invented. */}
                   {here && (
-                    <p className="mt-1 animate-fade-in truncate text-[11px] font-medium text-brand-600 lg:mt-1.5 lg:text-xs">
+                    <p className="mt-1 animate-fade-in truncate text-[11px] font-medium text-steel-600 lg:mt-1.5 lg:text-xs">
                       {sectionDetail(state, asked, ceiling)}
                     </p>
                   )}
@@ -900,16 +899,16 @@ function Rail({
         // Desktop only, for the same reason as the welcome block: on a phone
         // this sits under the step band and pushes the conversation off the
         // first screen, and the greeting bubble already says the personal half.
-        <div className="mt-6 hidden items-center gap-3 rounded-2xl border border-cloud-200 bg-cloud-50 px-3.5 py-3 lg:flex">
+        <div className="mt-6 hidden items-center gap-3 rounded-2xl border border-bone-200 bg-bone-50 px-3.5 py-3 lg:flex">
           <span
             aria-hidden
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-600 text-sm font-medium text-white"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-ink text-sm font-medium text-bone-50"
           >
             {initial}
           </span>
           <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-cloud-900">{viewer.name.split(/\s+/)[0]}</p>
-            <p className="truncate text-xs text-cloud-400">
+            <p className="truncate text-sm font-medium text-ink">{viewer.name.split(/\s+/)[0]}</p>
+            <p className="truncate text-xs text-ink-400">
               {[viewer.designation, viewer.company].filter(Boolean).join(' \u00b7 ')}
             </p>
           </div>
@@ -1092,7 +1091,7 @@ export function greetingFor(viewer?: Viewer): string | null {
 function AgentBubble({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex animate-rise justify-start">
-      <div className="max-w-[38rem] rounded-2xl rounded-bl-md border border-cloud-200/70 bg-white/80 px-4 py-3 text-sm leading-relaxed text-cloud-900 shadow-e1 backdrop-blur-sm">
+      <div className="max-w-[38rem] rounded-2xl rounded-bl-md border border-bone-200/70 bg-white/80 px-4 py-3 text-sm leading-relaxed text-ink shadow-paper backdrop-blur-sm">
         {children}
       </div>
     </div>
@@ -1120,12 +1119,12 @@ function AgentBubble({ children }: { children: React.ReactNode }) {
 function TypingBubble({ label }: { label: string }) {
   return (
     <div className="flex animate-rise justify-start" role="status" aria-live="polite">
-      <div className="flex max-w-[38rem] items-center gap-3 rounded-2xl rounded-bl-md border border-cloud-200/70 bg-white/80 px-4 py-3 shadow-e1 backdrop-blur-sm">
+      <div className="flex max-w-[38rem] items-center gap-3 rounded-2xl rounded-bl-md border border-bone-200/70 bg-white/80 px-4 py-3 shadow-paper backdrop-blur-sm">
         <span aria-hidden className="flex items-end gap-1">
           {[0, 1, 2].map((dot) => (
             <span
               key={dot}
-              className="h-1.5 w-1.5 animate-typing-dot rounded-full bg-brand-500"
+              className="h-1.5 w-1.5 animate-typing-dot rounded-full bg-steel-500"
               // Per-dot, so they travel as a wave rather than pulsing in
               // unison. Inline because the delay is per-index and Tailwind has
               // no arbitrary-delay-by-loop utility.
@@ -1133,7 +1132,7 @@ function TypingBubble({ label }: { label: string }) {
             />
           ))}
         </span>
-        <span className="text-sm leading-relaxed text-cloud-500">{label}</span>
+        <span className="text-sm leading-relaxed text-ink-500">{label}</span>
       </div>
     </div>
   )
@@ -1170,9 +1169,9 @@ function Assembling({ phase, label }: { phase: Phase; label: string }) {
     <Card>
       <div className="flex items-center gap-3">
         <PresenceMark state="thinking" size={26} />
-        <h2 className="font-sans font-semibold text-lg text-cloud-900">Building your workspace</h2>
+        <h2 className="font-display text-lg text-ink">Building your workspace</h2>
       </div>
-      <p className="mt-2 text-sm text-cloud-600">
+      <p className="mt-2 text-sm text-ink-600">
         This is the part that takes a moment. Each step is saved as it finishes, so nothing here
         has to be done twice.
       </p>
@@ -1187,23 +1186,23 @@ function Assembling({ phase, label }: { phase: Phase; label: string }) {
                 aria-hidden
                 className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border transition-colors duration-500 ${
                   done
-                    ? 'border-brand-500 bg-brand-600 text-white'
+                    ? 'border-ink bg-ink text-bone-50'
                     : here
-                      ? 'border-brand-400 bg-white text-brand-600'
-                      : 'border-cloud-200 bg-white text-cloud-300'
+                      ? 'border-steel-400 bg-white text-steel-600'
+                      : 'border-bone-300 bg-white text-ink-300'
                 }`}
               >
                 {done ? (
                   <CheckMark />
                 ) : here ? (
-                  <span className="h-1.5 w-1.5 animate-typing-dot rounded-full bg-brand-500" />
+                  <span className="h-1.5 w-1.5 animate-typing-dot rounded-full bg-steel-500" />
                 ) : (
-                  <span className="h-1.5 w-1.5 rounded-full bg-cloud-300" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-bone-400" />
                 )}
               </span>
               <span
                 className={`text-sm transition-colors ${
-                  here ? 'font-medium text-cloud-900' : done ? 'text-cloud-500' : 'text-cloud-300'
+                  here ? 'font-medium text-ink' : done ? 'text-ink-500' : 'text-ink-300'
                 }`}
               >
                 {stage.text}
@@ -1216,7 +1215,7 @@ function Assembling({ phase, label }: { phase: Phase; label: string }) {
       {/* The live label, which escalates on a long wait. Kept beside the list
           rather than instead of it: the list says what the work is, this says
           it is still happening. */}
-      <p role="status" aria-live="polite" className="mt-4 text-xs text-cloud-400">
+      <p role="status" aria-live="polite" className="mt-4 text-xs text-ink-400">
         {label}
       </p>
     </Card>
@@ -1229,7 +1228,7 @@ function Bubble({ turn }: { turn: { role: string; text: string; target: string |
   return (
     <div className="flex justify-end">
       <div className="max-w-[38rem]">
-        <div className="rounded-2xl rounded-br-md bg-brand-600 px-4 py-3 text-sm text-white">
+        <div className="rounded-2xl rounded-br-md bg-ink px-4 py-3 text-sm text-bone-50">
           {turn.text}
         </div>
         {turn.scope !== null && <ScopeTag scope={turn.scope} />}
@@ -1255,8 +1254,8 @@ function Bubble({ turn }: { turn: { role: string; text: string; target: string |
 function ScopeTag({ scope }: { scope: number }) {
   const label = SCOPE_LABEL[scope] ?? `L${scope}`
   return (
-    <p className="mt-1 flex items-center justify-end gap-1.5 text-right text-[11px] text-cloud-300">
-      <span aria-hidden className="h-1 w-1 rounded-full bg-cloud-200" />
+    <p className="mt-1 flex items-center justify-end gap-1.5 text-right text-[11px] text-ink-300">
+      <span aria-hidden className="h-1 w-1 rounded-full bg-ink-200" />
       {label}
     </p>
   )
@@ -1295,17 +1294,17 @@ function BriefConfirm({
 
   return (
     <Card>
-      <p className="text-sm text-cloud-600">
+      <p className="text-sm text-ink-600">
         You outrank the website. If any of that is wrong, say so — your version is what
         every director works from.
       </p>
 
-      <ul className="mt-3 divide-y divide-cloud-200">
+      <ul className="mt-3 divide-y divide-bone-200">
         {statements.map((statement) => (
           <li key={statement.field} className="py-3">
             <label
               htmlFor={`fix-${statement.field}`}
-              className="text-xs font-medium text-cloud-600"
+              className="text-xs font-medium text-ink-600"
             >
               {statement.label ?? statement.field}
             </label>
@@ -1319,16 +1318,16 @@ function BriefConfirm({
                 disabled={disabled}
                 defaultValue={statement.text}
                 onChange={(event) => onChange(statement.field, event.target.value)}
-                className="mt-1 w-full rounded-lg border border-cloud-200 px-3 py-2 text-sm text-cloud-900"
+                className="mt-1 w-full rounded-lg border border-bone-300 px-3 py-2 text-sm text-ink"
               />
             ) : (
-              <p className="mt-0.5 text-sm text-cloud-500">{statement.text}</p>
+              <p className="mt-0.5 text-sm text-ink-500">{statement.text}</p>
             )}
             <span
               className={
                 statement.confidence === 'read'
-                  ? 'mt-1 inline-block rounded bg-azure-100 px-2 py-0.5 font-mono text-[10px] text-azure-700'
-                  : 'mt-1 inline-block rounded bg-brand-100 px-2 py-0.5 font-mono text-[10px] text-brand-600'
+                  ? 'mt-1 inline-block rounded bg-steel-100 px-2 py-0.5 font-mono text-[10px] text-steel-700'
+                  : 'mt-1 inline-block rounded bg-gold-100 px-2 py-0.5 font-mono text-[10px] text-gold-600'
               }
             >
               {statement.confidence}
@@ -1343,14 +1342,14 @@ function BriefConfirm({
         // of its own rather than another provenance entry. Always visible, not
         // folded in behind the editors: a thing being quietly assumed is
         // exactly what a person would want to catch without going looking.
-        <div className="mt-3 rounded-xl border border-dashed border-cloud-300 bg-cloud-50 p-3">
-          <p className="font-mono text-[10px] uppercase tracking-wider text-cloud-400">
+        <div className="mt-3 rounded-xl border border-dashed border-bone-400 bg-bone-50 p-3">
+          <p className="font-mono text-[10px] uppercase tracking-wider text-ink-400">
             Proceeding on these assumptions
           </p>
           <ul className="mt-2 space-y-1">
             {assumptions.map((assumption) => (
-              <li key={assumption.text} className="text-xs text-cloud-500">
-                {assumption.text} — <span className="text-cloud-300">{assumption.evidence}</span>
+              <li key={assumption.text} className="text-xs text-ink-500">
+                {assumption.text} — <span className="text-ink-300">{assumption.evidence}</span>
               </li>
             ))}
           </ul>
@@ -1362,7 +1361,7 @@ function BriefConfirm({
           type="button"
           onClick={onConfirm}
           disabled={disabled}
-          className="app-btn rounded-full"
+          className="rounded-full bg-ink px-5 py-2 text-sm font-medium text-bone-50 disabled:opacity-50"
         >
           {editing ? 'Save and keep going' : 'That is right — keep going'}
         </button>
@@ -1371,7 +1370,7 @@ function BriefConfirm({
             type="button"
             onClick={() => setEditing(true)}
             disabled={disabled}
-            className="rounded-full border border-cloud-200 px-5 py-2 text-sm text-cloud-600 hover:border-brand-400 disabled:opacity-50"
+            className="rounded-full border border-bone-300 px-5 py-2 text-sm text-ink-600 hover:border-steel-400 disabled:opacity-50"
           >
             Something is wrong
           </button>
@@ -1423,7 +1422,7 @@ function Describe({
           I could not read {domain ?? 'your website'} — it may be behind bot protection, or
           there may be nothing there yet.
         </p>
-        <p className="mt-2 text-cloud-500">
+        <p className="mt-2 text-ink-500">
           That is not a problem. Tell me the three things I would have looked for and we can
           carry on exactly as we would have.
         </p>
@@ -1444,7 +1443,7 @@ function Describe({
             ] as const
           ).map(([label, value, setValue, hint]) => (
             <div key={label}>
-              <label htmlFor={`describe-${label}`} className="text-sm font-medium text-cloud-600">
+              <label htmlFor={`describe-${label}`} className="text-sm font-medium text-ink-600">
                 {label}
               </label>
               <textarea
@@ -1453,9 +1452,9 @@ function Describe({
                 value={value}
                 disabled={disabled}
                 onChange={(event) => setValue(event.target.value)}
-                className="mt-1 w-full rounded-xl border border-cloud-200 bg-white px-3 py-2 text-sm text-cloud-900"
+                className="mt-1 w-full rounded-xl border border-bone-300 bg-white px-3 py-2 text-sm text-ink"
               />
-              <p className="mt-1 text-xs text-cloud-400">{hint}</p>
+              <p className="mt-1 text-xs text-ink-400">{hint}</p>
             </div>
           ))}
         </div>
@@ -1470,7 +1469,7 @@ function Describe({
               goals: goals.trim(),
             })
           }
-          className="app-btn mt-4 rounded-full"
+          className="mt-4 rounded-full bg-ink px-5 py-2 text-sm font-medium text-bone-50 disabled:opacity-50"
         >
           That is us — keep going
         </button>
@@ -1511,37 +1510,37 @@ function PersonaConfirm({
 
   return (
     <Card>
-      <h2 className="font-sans font-semibold text-lg text-cloud-900">Here is how I understood you</h2>
+      <h2 className="font-display text-lg text-ink">Here is how I understood you</h2>
       {/* The builder's own sentence, which the API has always returned and the
           old panel never rendered. "Does this sound like you" is a question
           about a sentence; the rows below it are the evidence for the answer. */}
-      <p className="mt-2 text-sm text-cloud-600">
+      <p className="mt-2 text-sm text-ink-600">
         {summary || 'This is what I will use to decide what your workspace shows you first.'}
       </p>
 
-      <ul className="mt-3 divide-y divide-cloud-200">
+      <ul className="mt-3 divide-y divide-bone-200">
         {fields.length === 0 && (
           // The stage committed but wrote nothing worth showing. Saying so beats
           // an empty list, which reads as a real and bad result.
-          <li className="py-2 text-sm italic text-cloud-400">
+          <li className="py-2 text-sm italic text-ink-400">
             Nothing specific yet — your workspace will start from your role and learn the rest.
           </li>
         )}
         {fields.map((field) => (
           <li key={field.key} className="py-2">
-            <p className="text-xs font-medium text-cloud-600">{field.label}</p>
-            <p className="mt-0.5 text-sm text-cloud-500">{field.value}</p>
+            <p className="text-xs font-medium text-ink-600">{field.label}</p>
+            <p className="mt-0.5 text-sm text-ink-500">{field.value}</p>
             {field.derived_from && (
               // The span that produced it, quoted. A summary a person cannot
               // trace back to something they said is a summary they have no
               // grounds to correct.
-              <p className="mt-0.5 text-[11px] italic text-cloud-300">“{field.derived_from}”</p>
+              <p className="mt-0.5 text-[11px] italic text-ink-300">“{field.derived_from}”</p>
             )}
           </li>
         ))}
       </ul>
 
-      <p className="mt-3 border-l-2 border-brand-400 pl-2 text-[11px] leading-snug text-cloud-400">
+      <p className="mt-3 border-l-2 border-gold pl-2 text-[11px] leading-snug text-ink-400">
         This changes what NEXUS shows you first. It never changes what you are allowed to see —
         that comes from your role, which this conversation cannot change.
       </p>
@@ -1550,7 +1549,7 @@ function PersonaConfirm({
         type="button"
         onClick={onConfirm}
         disabled={disabled}
-        className="app-btn mt-4 rounded-full"
+        className="mt-4 rounded-full bg-ink px-5 py-2 text-sm font-medium text-bone-50 disabled:opacity-50"
       >
         That is me — finish setup
       </button>
@@ -1604,7 +1603,7 @@ function Ask({
                 onChange(choice)
                 onSubmit(choice)
               }}
-              className="rounded-full border border-cloud-200 bg-white/70 px-3 py-1.5 text-sm text-cloud-600 hover:border-brand-400 disabled:opacity-50"
+              className="rounded-full border border-bone-300 bg-white/70 px-3 py-1.5 text-sm text-ink-600 hover:border-steel-400 disabled:opacity-50"
             >
               {choice}
             </button>
@@ -1682,9 +1681,9 @@ function Composer({
        The field inside keeps the same reading measure as the bubbles, because
        what is being typed is prose and a textarea the width of a monitor is
        not a thing anybody wants to write into. */
-    <div className="sticky bottom-0 z-10 w-full border-t border-cloud-200 bg-white/95 pb-5 pt-4 backdrop-blur">
+    <div className="sticky bottom-0 z-10 w-full border-t border-bone-200 bg-bone-50/95 pb-5 pt-4 backdrop-blur">
       <div className="mx-auto w-full max-w-3xl px-6">
-      <label htmlFor="answer" className="text-xs font-medium text-cloud-600">
+      <label htmlFor="answer" className="text-xs font-medium text-ink-600">
         {label}
       </label>
       <div className="mt-1 flex items-end gap-2">
@@ -1701,8 +1700,8 @@ function Composer({
                 if (value.trim()) onSubmit(value)
               }
             }}
-            className={`w-full rounded-xl border bg-white px-3 py-2 pr-12 text-sm text-cloud-900 transition-colors ${
-              dictation.listening ? 'border-clay-400 ring-1 ring-clay-300' : 'border-cloud-200'
+            className={`w-full rounded-xl border bg-white px-3 py-2 pr-12 text-sm text-ink transition-colors ${
+              dictation.listening ? 'border-clay-400 ring-1 ring-clay-300' : 'border-bone-300'
             }`}
           />
           {dictation.supported && (
@@ -1719,7 +1718,7 @@ function Composer({
               className={`absolute bottom-2 right-2 grid h-8 w-8 place-items-center rounded-full border transition-colors disabled:opacity-40 ${
                 dictation.listening
                   ? 'border-clay-400 bg-clay-100 text-clay-600'
-                  : 'border-cloud-200 bg-white text-cloud-500 hover:border-brand-400 hover:text-brand-600'
+                  : 'border-bone-300 bg-white text-ink-500 hover:border-steel-400 hover:text-steel-600'
               }`}
             >
               <MicIcon />
@@ -1736,7 +1735,7 @@ function Composer({
           type="button"
           onClick={() => onSubmit(value)}
           disabled={disabled || !value.trim()}
-          className="app-btn h-10 rounded-full px-4"
+          className="h-10 rounded-full bg-ink px-4 text-sm text-bone-50 disabled:opacity-40"
         >
           Send
         </button>
@@ -1757,7 +1756,7 @@ function Composer({
         </p>
       )}
       {hint && (
-        <p className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-cloud-400">
+        <p className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-ink-400">
           {hint.startsWith('Stored as') ? (
             <>
               <span>Stored as</span>
@@ -1836,14 +1835,14 @@ function ReadyCard({ state, router }: { state: AgentState; router: ReturnType<ty
     <div className="flex flex-col gap-5">
       {/* The arrival. It is the one moment in the journey that is an ending, and
           it used to look like every card before it — same border, same heading
-          size, same button. The "ready" presence mark is used exactly once in
-          this product and this is the place. */}
-      <div className="animate-rise-scale rounded-2xl border border-cloud-200 bg-white/90 p-6 text-center backdrop-blur-sm">
+          size, same button. The mark in gold is used exactly once in this
+          product and this is the place. */}
+      <div className="animate-rise-scale rounded-2xl border border-bone-300 bg-white/90 p-6 text-center backdrop-blur-sm">
         <div className="flex justify-center">
           <PresenceMark state="ready" size={44} />
         </div>
-        <h2 className="mt-4 font-sans font-semibold text-title text-cloud-900">Your Company Brain is live</h2>
-        <p className="mx-auto mt-2 max-w-prose text-sm leading-relaxed text-cloud-600">
+        <h2 className="mt-4 font-display text-title text-ink">Your Company Brain is live</h2>
+        <p className="mx-auto mt-2 max-w-prose text-sm leading-relaxed text-ink-600">
           Every director reads this. You can correct any of it in Settings, and what you say
           there outranks what we read.
         </p>
@@ -1851,7 +1850,7 @@ function ReadyCard({ state, router }: { state: AgentState; router: ReturnType<ty
         <button
           type="button"
           onClick={() => router.replace('/dashboard')}
-          className="app-btn mt-5 inline-flex rounded-full px-7 py-3 transition-transform hover:scale-[1.03]"
+          className="mt-5 inline-block rounded-full bg-ink px-7 py-3 text-sm font-medium text-bone-50 shadow-paper transition-transform hover:scale-[1.03]"
         >
           Open my workspace
         </button>
@@ -1859,21 +1858,21 @@ function ReadyCard({ state, router }: { state: AgentState; router: ReturnType<ty
 
       {facts.length > 0 && (
         <Card>
-          <p className="font-mono text-2xs uppercase tracking-[0.12em] text-cloud-400">
+          <p className="font-mono text-2xs uppercase tracking-[0.12em] text-ink-400">
             What it knows
           </p>
           <ul className="mt-2 flex flex-col gap-2">
             {facts.map((fact, index) => (
               <li
                 key={fact.key}
-                className="animate-rise text-sm leading-relaxed text-cloud-700"
+                className="animate-rise text-sm leading-relaxed text-ink-700"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 {fact.value}
                 {/* The same scope tag the transcript showed as each answer was
                     given, so the vocabulary does not change between the screen
                     where you said it and the screen where it is kept. */}
-                <span className="ml-2 font-mono text-2xs uppercase tracking-[0.08em] text-cloud-400">
+                <span className="ml-2 font-mono text-2xs uppercase tracking-[0.08em] text-ink-400">
                   L{fact.scope}
                 </span>
               </li>
@@ -1884,13 +1883,13 @@ function ReadyCard({ state, router }: { state: AgentState; router: ReturnType<ty
 
       {gaps.length > 0 && (
         <Card>
-          <p className="font-mono text-2xs uppercase tracking-[0.12em] text-cloud-400">
+          <p className="font-mono text-2xs uppercase tracking-[0.12em] text-ink-400">
             Not yet, and what would change that
           </p>
           <ul className="mt-2 flex flex-col gap-1.5">
             {gaps.map((gap) => (
-              <li key={gap.topic} className="text-sm leading-relaxed text-cloud-500">
-                <span className="text-cloud-700">{gap.topic}</span>
+              <li key={gap.topic} className="text-sm leading-relaxed text-ink-500">
+                <span className="text-ink-700">{gap.topic}</span>
                 {' — '}
                 {gap.unlocked_by}
               </li>
@@ -1919,7 +1918,7 @@ export function sentence(text: string | null | undefined): string {
 }
 
 function Card({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-2xl border border-cloud-200 bg-white/90 p-4 backdrop-blur-sm">{children}</div>
+  return <div className="rounded-2xl border border-bone-300 bg-white/90 p-4 backdrop-blur-sm">{children}</div>
 }
 
 function ReadingBubble({
@@ -1934,21 +1933,17 @@ function ReadingBubble({
   return (
     <AgentBubble>
       <p>{domain ? `Reading ${domain} now.` : 'Reading your website now.'}</p>
-      {label && <p className="mt-1 text-cloud-500">{label}</p>}
-
-      {/* The same scan motion as the research screen, compact — so "reading your
-          site" looks the same whether it is the opening screen or a turn here. */}
-      <ScanMock className="mt-3" />
+      {label && <p className="mt-1 text-ink-500">{label}</p>}
 
       {pages.length > 0 && (
         <>
           {/* A real count of a real array. Never "about a dozen pages". */}
-          <p className="mt-3 font-mono text-[10px] uppercase tracking-wider text-cloud-400">
+          <p className="mt-3 font-mono text-[10px] uppercase tracking-wider text-ink-400">
             {pages.length === 1 ? '1 page fetched' : `${pages.length} pages fetched`}
           </p>
           <ul className="mt-1 flex flex-col gap-0.5">
             {pages.map((url) => (
-              <li key={url} className="truncate text-xs text-cloud-500">
+              <li key={url} className="truncate text-xs text-ink-500">
                 {url}
               </li>
             ))}
@@ -1995,18 +1990,18 @@ function Booting({
 }) {
   if (error) {
     return (
-      <div className="theme-app relative grid min-h-screen place-items-center px-6">
+      <div className="relative grid min-h-screen place-items-center px-6">
         <OnboardingAura state="idle" />
-        <div className="max-w-md rounded-2xl border border-cloud-200 bg-white/90 p-6 backdrop-blur-sm">
-          <h1 className="font-sans font-semibold text-lg text-cloud-900">Setup could not start</h1>
-          <p role="alert" className="mt-2 text-sm text-cloud-600">
+        <div className="max-w-md rounded-2xl border border-bone-300 bg-white/90 p-6 backdrop-blur-sm">
+          <h1 className="font-display text-lg text-ink">Setup could not start</h1>
+          <p role="alert" className="mt-2 text-sm text-ink-600">
             {error}
           </p>
           {/* Not "nothing has been saved" — that read as a contradiction of the
               sentence after it, and it is not true either. Every turn is
               committed as it happens, which is exactly why trying again resumes
               rather than restarts. */}
-          <p className="mt-3 text-xs text-cloud-400">
+          <p className="mt-3 text-xs text-ink-400">
             Nothing was lost. Anything you have already answered is saved on your workspace,
             and trying again picks up from there.
           </p>
@@ -2014,7 +2009,7 @@ function Booting({
             <button
               type="button"
               onClick={onRetry}
-              className="app-btn mt-4 rounded-full"
+              className="mt-4 rounded-full bg-ink px-5 py-2 text-sm font-medium text-bone-50"
             >
               Try again
             </button>
@@ -2024,203 +2019,27 @@ function Booting({
     )
   }
 
-  // The landing/loading state is the first screen of the product, so it wears the
-  // same two-column frame the conversation does — a static rail saying where you
-  // are, and a canvas that *shows the research happening* rather than a bare
-  // spinner. The rail is static here (there is no session yet), with Conversation
-  // marked as the step in progress.
   return (
-    <div className="theme-app relative min-h-screen lg:grid lg:grid-cols-[21.5rem_minmax(0,1fr)]">
+    <div className="relative grid min-h-screen place-items-center px-6">
       <OnboardingAura state="thinking" />
-
-      {/* Static rail — mirrors `Rail` without a live session. */}
-      <aside className="z-10 flex flex-col border-b border-cloud-200 bg-white px-4 py-4 lg:sticky lg:top-0 lg:h-screen lg:border-b-0 lg:border-r lg:px-7 lg:py-8">
-        <span className="flex items-center gap-2.5">
-          <PresenceMark state="thinking" />
-          <NexusMark />
-        </span>
-        <div className="mt-8 hidden animate-rise lg:block">
-          <h2 className="font-sans text-xl font-semibold text-cloud-900">Welcome to NEXUS OS.</h2>
-          <p className="mt-1.5 text-sm leading-relaxed text-cloud-500">
-            A short conversation, and your workspace is built around your company — and you.
-          </p>
-        </div>
-        <ol className="mt-5 flex flex-1 flex-row items-stretch gap-1.5 lg:mt-7 lg:flex-col">
-          {SECTIONS.map((section, index) => {
-            const here = index === 0
-            return (
-              <li
-                key={section.key}
-                className={`relative flex-1 animate-rise rounded-xl px-2.5 py-2 transition-colors duration-500 lg:flex-none lg:px-3 lg:py-2.5 ${here ? 'bg-brand-50' : ''}`}
-                style={{ animationDelay: `${index * 70}ms` }}
-              >
-                {here && (
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-2.5 bottom-0 h-[3px] rounded-full bg-brand-500 lg:inset-x-auto lg:-left-px lg:bottom-3 lg:top-3 lg:h-auto lg:w-[3px]"
-                  />
-                )}
-                <div className="flex items-center gap-2 lg:items-start lg:gap-3">
-                  <span
-                    aria-hidden
-                    className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl border transition-colors duration-500 lg:h-9 lg:w-9 ${
-                      here
-                        ? 'border-brand-300 bg-white text-brand-600 shadow-e1'
-                        : 'border-cloud-200 bg-white text-cloud-300'
-                    }`}
-                  >
-                    <SectionGlyph section={section.key} />
-                  </span>
-                  <div className="min-w-0">
-                    <p className={`truncate text-xs font-medium lg:text-sm ${here ? 'text-cloud-900' : 'text-cloud-300'}`}>
-                      {section.label}
-                    </p>
-                    <p className={`mt-0.5 hidden text-xs lg:block ${here ? 'text-cloud-400' : 'text-cloud-300'}`}>
-                      {section.hint}
-                    </p>
-                    {here && (
-                      <p className="mt-1 animate-fade-in truncate text-[11px] font-medium text-brand-600 lg:mt-1.5 lg:text-xs">
-                        Researching your company…
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </li>
-            )
-          })}
-        </ol>
-      </aside>
-
-      {/* Canvas — the research animation. */}
-      <main id="main" tabIndex={-1} className="relative flex min-h-screen flex-col bg-cloud-50">
-        <header className="mx-auto w-full max-w-3xl px-6 pt-10">
-          {/* No "Step N of 3" here: this screen precedes the session, so a step
-              count would be invented — and it would duplicate the real one the
-              loaded rail carries. The rail beside this already marks Conversation
-              as the step in progress. */}
-          <p className="animate-fade-in font-mono text-[11px] uppercase tracking-[0.22em] text-cloud-400">
-            Getting started
-            <span className="text-cloud-300"> · {SECTIONS[0].label}</span>
-          </p>
-          <h1 className="mt-1.5 animate-rise font-sans text-title font-semibold text-cloud-900">
-            Researching your company
-          </h1>
-        </header>
-
-        <div
-          role="status"
-          aria-live="polite"
-          className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-8 px-6 pb-16"
-        >
-          <ResearchAnimation />
-          <p className="max-w-md text-center text-sm text-cloud-400">{label}</p>
-        </div>
-      </main>
-    </div>
-  )
-}
-
-/**
- * The "gathering information" visual: a site being scanned, with the real work
- * named beside it. Honest by construction — a sweeping line and pulsing rows say
- * *something is happening*, but there is no percentage or step count, because
- * reading a website has no denominator (the same rule the loading copy follows).
- */
-function ResearchAnimation() {
-  const tasks = [
-    { label: 'Fetching the website', glyph: 'globe' as const },
-    { label: 'Reading the pages', glyph: 'doc' as const },
-    { label: 'Writing up what’s there', glyph: 'spark' as const },
-  ]
-  return (
-    <div className="w-full max-w-md" aria-hidden="true">
-      <ScanMock className="shadow-e2" />
-
-      {/* What it is doing, named — pulsing to show it is live. */}
-      <ul className="mt-5 space-y-2.5">
-        {tasks.map((t, i) => (
-          <li key={t.label} className="flex items-center gap-3">
-            <span
-              className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600 motion-safe:animate-pulse-dot"
-              style={{ animationDelay: `${i * 0.5}s` }}
-            >
-              <TaskGlyph glyph={t.glyph} />
-            </span>
-            <span className="text-sm text-cloud-600">{t.label}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
-
-/**
- * A website being scanned — the shared scan visual. A browser frame over pulsing
- * skeleton rows with a sweeping brand-coloured line, used both on the full
- * research screen and, compact, inside the in-conversation reading bubble, so the
- * two read as the same "we are looking at your site" motion.
- */
-function ScanMock({ className = '' }: { className?: string }) {
-  return (
-    <div
-      aria-hidden="true"
-      className={`relative overflow-hidden rounded-xl border border-cloud-200 bg-white ${className}`}
-    >
-      <div className="flex items-center gap-1.5 border-b border-cloud-100 px-3 py-2">
-        <span className="h-1.5 w-1.5 rounded-full bg-cloud-200" />
-        <span className="h-1.5 w-1.5 rounded-full bg-cloud-200" />
-        <span className="h-1.5 w-1.5 rounded-full bg-cloud-200" />
-        <span className="ml-1.5 h-2 w-24 rounded-full bg-cloud-100" />
+      <div role="status" aria-live="polite" className="flex flex-col items-center gap-5">
+        {/* The same mark as the header, drawn large. Three staggered dots used
+            to sit here saying "something is happening" in triplicate, next to a
+            background disc saying it a fourth time. One thing, once. */}
+        <PresenceMark state="thinking" size={56} />
+        <p className="max-w-md text-center text-sm text-ink-400">{label}</p>
       </div>
-      <div className="space-y-2.5 p-4">
-        <span className="block h-3 w-1/2 rounded bg-brand-100 motion-safe:animate-breathe" />
-        <span className="block h-2 w-full rounded bg-cloud-100 motion-safe:animate-breathe" style={{ animationDelay: '0.2s' }} />
-        <span className="block h-2 w-11/12 rounded bg-cloud-100 motion-safe:animate-breathe" style={{ animationDelay: '0.35s' }} />
-        <div className="flex gap-2 pt-0.5">
-          <span className="h-4 w-14 rounded-full bg-gold-100 motion-safe:animate-breathe" style={{ animationDelay: '0.5s' }} />
-          <span className="h-4 w-10 rounded-full bg-brand-100 motion-safe:animate-breathe" style={{ animationDelay: '0.65s' }} />
-          <span className="h-4 w-12 rounded-full bg-cloud-100 motion-safe:animate-breathe" style={{ animationDelay: '0.8s' }} />
-        </div>
-        <span className="block h-2 w-4/5 rounded bg-cloud-100 motion-safe:animate-breathe" style={{ animationDelay: '0.95s' }} />
-      </div>
-      {/* The sweeping scan line. */}
-      <span className="pointer-events-none absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-brand-500 to-transparent shadow-[0_0_12px_2px_theme(colors.brand.400)] motion-safe:animate-scan-line" />
     </div>
-  )
-}
-
-function TaskGlyph({ glyph }: { glyph: 'globe' | 'doc' | 'spark' }) {
-  const common = { viewBox: '0 0 20 20', fill: 'none', 'aria-hidden': true, className: 'h-3.5 w-3.5' } as const
-  if (glyph === 'globe') {
-    return (
-      <svg {...common}>
-        <circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.4" />
-        <path d="M3 10h14M10 3c2.5 2 2.5 12 0 14M10 3c-2.5 2-2.5 12 0 14" stroke="currentColor" strokeWidth="1.4" />
-      </svg>
-    )
-  }
-  if (glyph === 'doc') {
-    return (
-      <svg {...common}>
-        <path d="M5 3.5h6l4 4V16a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z" stroke="currentColor" strokeWidth="1.4" />
-        <path d="M7 9.5h6M7 12.5h6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-      </svg>
-    )
-  }
-  return (
-    <svg {...common}>
-      <path d="M10 3l1.6 4.4L16 9l-4.4 1.6L10 15l-1.6-4.4L4 9l4.4-1.6L10 3Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
-    </svg>
   )
 }
 
 function Blocked({ message }: { message: string }) {
   return (
-    <div className="theme-app grid min-h-screen place-items-center px-6">
-      <div className="max-w-md rounded-2xl border border-cloud-200 bg-white p-6">
-        <h1 className="font-sans font-semibold text-lg text-cloud-900">Guided onboarding is unavailable</h1>
-        <p className="mt-2 text-sm text-cloud-600">{message}</p>
-        <p className="mt-3 text-xs text-cloud-400">
+    <div className="grid min-h-screen place-items-center px-6">
+      <div className="max-w-md rounded-2xl border border-bone-300 bg-white p-6">
+        <h1 className="font-display text-lg text-ink">Guided onboarding is unavailable</h1>
+        <p className="mt-2 text-sm text-ink-600">{message}</p>
+        <p className="mt-3 text-xs text-ink-400">
           Sign-in and every existing workspace are unaffected. There is deliberately no
           fallback form — a questionnaire that quietly replaced the assistant would collect
           less and look the same.

@@ -1,6 +1,7 @@
 'use client'
 
 import { useId, useState } from 'react'
+import { IconEye, IconEyeOff } from '@/components/art/Icons'
 
 /**
  * A labelled input with its error wired up for screen readers.
@@ -93,7 +94,7 @@ export function Field({
 
   return (
     <div>
-      <label htmlFor={id} className="app-label">
+      <label htmlFor={id} className="block text-sm font-medium text-ink-800">
         {label}
       </label>
 
@@ -108,13 +109,16 @@ export function Field({
             disabled={disabled}
             aria-invalid={error ? true : undefined}
             aria-describedby={describedById}
-            // `app-field`'s own `select` rule draws the chevron (an
-            // `appearance-none` background image) at its own height and font
-            // on every platform, which next to these inputs reads as a
-            // different form otherwise. No `pr-20` branch — `revealable` is a
-            // password affordance and cannot apply here.
-            className={`app-field h-12 ${value ? 'text-cloud-900' : 'text-cloud-400'} ${
-              error ? 'border-clay-500 focus:border-clay-500 focus:ring-clay-200' : ''
+            // `appearance-none` plus an explicit chevron: the native control
+            // renders at its own height and font on every platform, which next
+            // to these inputs reads as a different form. No `pr-20` branch —
+            // `revealable` is a password affordance and cannot apply here.
+            className={`h-12 w-full appearance-none rounded-xl border bg-white px-4 pr-10 text-[0.95rem] shadow-paper outline-none transition-colors disabled:bg-bone-100 disabled:text-ink-500 ${
+              value ? 'text-ink-900' : 'text-ink-300'
+            } ${
+              error
+                ? 'border-clay-500 focus:border-clay-500 focus:ring-2 focus:ring-clay-200'
+                : 'border-ink-200 focus:border-steel-500 focus:ring-2 focus:ring-steel-200'
             }`}
           >
             <option value="">{placeholder ?? 'Select…'}</option>
@@ -137,33 +141,50 @@ export function Field({
             placeholder={placeholder}
             aria-invalid={error ? true : undefined}
             aria-describedby={describedById}
-            className={`app-field h-12 ${
-              error ? 'border-clay-500 focus:border-clay-500 focus:ring-clay-200' : ''
-            } ${revealable ? 'pr-20' : ''}`}
+            className={`h-12 w-full rounded-xl border bg-white px-4 text-[0.95rem] text-ink-900 shadow-paper outline-none transition-colors placeholder:text-ink-300 disabled:bg-bone-100 disabled:text-ink-500 ${
+              error
+                ? 'border-clay-500 focus:border-clay-500 focus:ring-2 focus:ring-clay-200'
+                : 'border-ink-200 focus:border-steel-500 focus:ring-2 focus:ring-steel-200'
+            } ${revealable ? 'pr-12' : ''}`}
           />
         )}
+
+        {options ? (
+          <svg
+            aria-hidden
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            className="pointer-events-none absolute inset-y-0 right-3.5 my-auto h-4 w-4 text-ink-400"
+          >
+            <path d="M6 8l4 4 4-4" />
+          </svg>
+        ) : null}
 
         {revealable ? (
           <button
             type="button"
             onClick={() => setRevealed((r) => !r)}
-            className="absolute inset-y-0 right-2 my-auto h-8 rounded-lg px-2.5 font-mono text-2xs uppercase tracking-[0.1em] text-cloud-500 transition-colors hover:bg-cloud-100 hover:text-cloud-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
-            // The label says what will happen, and the state is announced
-            // separately — a button reading "Hide" while the value is hidden is
-            // the classic version of this bug.
+            className="absolute inset-y-0 right-2 my-auto grid h-8 w-8 place-items-center rounded-lg text-ink-500 transition-colors hover:bg-bone-100 hover:text-ink-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500"
+            // The accessible label says what pressing will do; `aria-pressed`
+            // announces the current state separately — a control labelled "Hide"
+            // while the value is hidden is the classic version of this bug.
+            aria-label={revealed ? 'Hide password' : 'Show password'}
             aria-pressed={revealed}
           >
-            {revealed ? 'Hide' : 'Show'}
+            {revealed ? <IconEyeOff className="h-5 w-5" /> : <IconEye className="h-5 w-5" />}
           </button>
         ) : null}
       </div>
 
       {error ? (
-        <p id={describedById} role="alert" className="app-hint mt-1.5 text-clay-600">
+        <p id={describedById} role="alert" className="mt-1.5 text-sm text-clay-600">
           {error}
         </p>
       ) : hint ? (
-        <p id={describedById} className="app-hint mt-1.5">
+        <p id={describedById} className="mt-1.5 text-sm text-ink-500">
           {hint}
         </p>
       ) : null}

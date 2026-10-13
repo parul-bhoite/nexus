@@ -92,7 +92,7 @@ describe('every page inside the shell', () => {
         // logo, and following delegation would flag every page that reaches
         // them.
         const source = readFileSync(file, 'utf8')
-        if (source.includes('<NexusMark') || source.includes('min-h-screen')) {
+        if (source.includes('<Logo') || source.includes('min-h-screen')) {
           offenders.push(file.replace(APP, 'app'))
         }
       }

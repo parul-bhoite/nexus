@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { Field } from '@/components/auth/Field'
 import { ArrowRight, Button } from '@/components/ui/Button'
-import { AuthError, MIN_PASSWORD_LENGTH, confirmPasswordReset } from '@/lib/auth-client'
+import { AuthError, PASSWORD_HINT, confirmPasswordReset, passwordProblem } from '@/lib/auth-client'
 
 type State = { status: 'idle' } | { status: 'submitting' } | { status: 'error'; message: string }
 
@@ -30,7 +30,7 @@ export function ResetPasswordForm() {
   const [state, setState] = useState<State>({ status: 'idle' })
 
   const busy = state.status === 'submitting'
-  const tooShort = password.length > 0 && password.length < MIN_PASSWORD_LENGTH
+  const passwordHint = password.length > 0 ? passwordProblem(password) : undefined
   const mismatched = confirmation.length > 0 && confirmation !== password
 
   if (!token) {
@@ -44,7 +44,7 @@ export function ResetPasswordForm() {
         </div>
         <Link
           href="/forgot-password"
-          className="font-medium text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700"
+          className="font-medium text-steel-600 underline decoration-steel-300 underline-offset-2 hover:text-steel-700"
         >
           Ask for a new link
         </Link>
@@ -61,11 +61,9 @@ export function ResetPasswordForm() {
     // nothing either. With the button no longer disableable via
     // `disabledReason` (R-03), an implicit submit (Enter in a field) needs
     // its own check or a mismatched password reaches the API.
-    if (password.length < MIN_PASSWORD_LENGTH) {
-      setState({
-        status: 'error',
-        message: `Your new password needs at least ${MIN_PASSWORD_LENGTH} characters.`,
-      })
+    const problem = passwordProblem(password)
+    if (problem) {
+      setState({ status: 'error', message: problem })
       return
     }
     if (confirmation !== password) {
@@ -110,8 +108,8 @@ export function ResetPasswordForm() {
         autoComplete="new-password"
         disabled={busy}
         revealable
-        hint={`At least ${MIN_PASSWORD_LENGTH} characters.`}
-        error={tooShort ? `Use at least ${MIN_PASSWORD_LENGTH} characters.` : undefined}
+        hint={PASSWORD_HINT}
+        error={passwordHint}
       />
 
       <Field
@@ -125,7 +123,7 @@ export function ResetPasswordForm() {
         error={mismatched ? 'These do not match.' : undefined}
       />
 
-      <p className="text-sm text-cloud-500">
+      <p className="text-sm text-ink-500">
         Setting a new password signs you out on every device — including this one.
       </p>
 

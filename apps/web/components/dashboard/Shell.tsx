@@ -24,26 +24,26 @@ export function Shell({ shell, company }: { shell: ShellData; company: string })
   return (
     <section className="flex flex-col gap-5">
       <header className="flex flex-wrap items-end justify-between gap-4">
-        <h1 className="font-sans text-title font-semibold text-cloud-900">{company}</h1>
+        <h1 className="font-display text-title font-medium text-ink-900">{company}</h1>
 
         <div className="text-right">
           {shell.score === null ? (
             // Absent, and it says why. A greyed-out "0" would be read as a
             // score, and no caption undoes a number somebody has already seen.
             <>
-              <p className="font-mono text-2xs uppercase tracking-[0.12em] text-brand-700">
+              <p className="font-mono text-2xs uppercase tracking-[0.12em] text-steel-700">
                 Company health
               </p>
-              <p className="mt-1 text-[0.95rem] text-cloud-600">
+              <p className="mt-1 text-[0.95rem] text-ink-600">
                 Not yet — no department has enough behind it to score.
               </p>
             </>
           ) : (
             <>
-              <p className="font-sans text-title font-semibold text-cloud-900">
+              <p className="font-display text-title font-medium text-ink-900">
                 {shell.score.toFixed(0)}
               </p>
-              <p className="font-mono text-2xs uppercase tracking-[0.12em] text-brand-700">
+              <p className="font-mono text-2xs uppercase tracking-[0.12em] text-steel-700">
                 across {shell.score_denominator} department
                 {shell.score_denominator === 1 ? '' : 's'}
               </p>
@@ -54,11 +54,11 @@ export function Shell({ shell, company }: { shell: ShellData; company: string })
 
       {/* A pair, never a percentage. The denominator is the part that makes the
           claim checkable, and "0 of 24" is a sentence somebody can argue with. */}
-      <div className="app-sunken px-5 py-4">
-        <p className="font-mono text-2xs uppercase tracking-[0.12em] text-brand-700">
+      <div className="rounded-2xl border border-ink-100 bg-bone-100 px-5 py-4">
+        <p className="font-mono text-2xs uppercase tracking-[0.12em] text-steel-700">
           What is built
         </p>
-        <p className="mt-1 text-[0.95rem] leading-relaxed text-cloud-800">
+        <p className="mt-1 text-[0.95rem] leading-relaxed text-ink-800">
           <strong>
             {shell.capabilities_delivered} of {shell.capabilities_total}
           </strong>{' '}
@@ -72,11 +72,11 @@ export function Shell({ shell, company }: { shell: ShellData; company: string })
       {shell.assistant_reserved ? (
         /* Q67. Reserved rather than absent: a blank region where a feature is
            coming reads as a bug, and a fake one reads as a lie. */
-        <div className="rounded-data border border-dashed border-cloud-200 px-5 py-4">
-          <p className="font-mono text-2xs uppercase tracking-[0.12em] text-cloud-400">
+        <div className="rounded-2xl border border-dashed border-ink-200 px-5 py-4">
+          <p className="font-mono text-2xs uppercase tracking-[0.12em] text-ink-400">
             Ask this director
           </p>
-          <p className="mt-1 text-sm leading-relaxed text-cloud-500">
+          <p className="mt-1 text-sm leading-relaxed text-ink-500">
             A chat panel belongs here. It will answer from your own documents and
             numbers, cite every one, and refuse anything outside what you can see.
             It is not built, so there is nothing here to try.

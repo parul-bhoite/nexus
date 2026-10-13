@@ -29,7 +29,7 @@ const STEPS = [3_000, 8_000] as const
 
 export function Waiting({
   children,
-  className = 'font-mono text-sm text-cloud-500',
+  className = 'font-mono text-sm text-ink-500',
   slow = 'Still going — the database is in another region, so this can take a few seconds.',
   verySlow = 'Taking longer than usual. Nothing has failed; it is worth waiting rather than retrying.',
 }: {
@@ -53,7 +53,7 @@ export function Waiting({
   return (
     <div role="status" aria-live="polite" className="flex flex-col gap-1.5">
       <p className={className}>{children}</p>
-      {elapsed >= 1 ? <p className="text-sm text-cloud-500">{elapsed >= 2 ? verySlow : slow}</p> : null}
+      {elapsed >= 1 ? <p className="text-sm text-ink-500">{elapsed >= 2 ? verySlow : slow}</p> : null}
     </div>
   )
 }
