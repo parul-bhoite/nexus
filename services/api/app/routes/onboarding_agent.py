@@ -26,6 +26,7 @@ import sqlalchemy as sa
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 
+from app.ai.contracts import LlmError
 from app.ai.registry import get_provider
 from app.ai.runtime.commands import CommandContext
 from app.ai.runtime.fields import (
@@ -887,7 +888,7 @@ async def read(scope: CurrentScope) -> StateOut:
         )
         try:
             state = await agent.start(state, pages=pages)
-        except SkillFailedError as exc:
+        except (SkillFailedError, LlmError) as exc:
             raise _unusable(exc) from exc
 
         for turn in state.turns:
@@ -1204,7 +1205,16 @@ async def _next_or_none(
     """
     try:
         return await _ask_next(db, scope, stored, who)
-    except SkillFailedError as exc:
+    except (SkillFailedError, LlmError) as exc:
+        # `LlmError` as well as `SkillFailedError`: `_ask_next` runs
+        # `question-generation` through the provider, and a provider failure
+        # (overload, timeout, a rejected request, bad credentials) is exactly the
+        # case this method exists to absorb — it must not unwind the answer that
+        # was already stored and audited in this transaction. This is the
+        # discovery-step 500: the first `question-generation` call for a new
+        # workspace raised an `LlmError` that nothing here caught, so the whole
+        # request fell through to the generic handler as a 500 and the answer was
+        # lost with it. Deferring returns None; the client re-asks via `/next`.
         log.warning("onboarding.next_question.deferred", error=str(exc))
         return None
 
@@ -1220,7 +1230,7 @@ async def open_discovery(payload: DiscoveryIn, scope: CurrentScope) -> AnswerOut
         state = _rehydrate(stored)
         try:
             await agent.open_discovery(state, payload.answer)
-        except SkillFailedError as exc:
+        except (SkillFailedError, LlmError) as exc:
             raise _unusable(exc) from exc
         # The opening question, written before the answer that replies to it.
         #
@@ -1278,7 +1288,7 @@ async def next_question(scope: CurrentScope) -> QuestionOut:
         stored = await _load(db, scope)
         try:
             return await _ask_next(db, scope, stored, await _who(db, scope))
-        except SkillFailedError as exc:
+        except (SkillFailedError, LlmError) as exc:
             raise _unusable(exc) from exc
 
 
@@ -1689,7 +1699,7 @@ async def finish(scope: CurrentScope) -> StateOut:
                     _schedule(_capture_pagespeed(scope, f"https://{domain}/"))
             else:
                 await agent.build_persona(state)
-        except SkillFailedError as exc:
+        except (SkillFailedError, LlmError) as exc:
             # Per-stage commits mean a failure here keeps every stage before it,
             # and clicking again resumes at the one that broke.
             raise _unusable(exc, keeps_progress=True) from exc
@@ -1797,12 +1807,20 @@ def _with_promoted_facts(context: dict[str, Any], answers: Mapping[str, str]) ->
     return context
 
 
-def _unusable(exc: SkillFailedError, *, keeps_progress: bool = False) -> HTTPException:
-    """A skill ran and produced nothing usable.
+def _unusable(exc: SkillFailedError | LlmError, *, keeps_progress: bool = False) -> HTTPException:
+    """A skill ran and produced nothing usable, or the provider could not be reached.
 
-    502 rather than 500: the provider answered, the answer was unusable. Never a
-    plausible default — a fabricated brief is the thing this product exists not
-    to produce, and it would be indistinguishable from a real one on screen.
+    502 rather than 500: either the provider answered and the answer was unusable
+    (`SkillFailedError`), or the provider call itself failed — overload, timeout,
+    rejected request, bad credentials (`LlmError`). Both are a bad gateway, not an
+    application fault, and both must degrade to a Retry rather than a bare 500 that
+    tells the person nothing and leaves the step unreachable. Before this caught
+    `LlmError`, a provider error on any onboarding model call escaped as the generic
+    500 — the discovery step's `question-generation` (haiku) call was where a new
+    workspace hit it first, and it blocked the whole journey.
+
+    Never a plausible default — a fabricated brief is the thing this product exists
+    not to produce, and it would be indistinguishable from a real one on screen.
 
     **`keeps_progress` exists because the old message was a lie.** Every caller
     said "Nothing was saved", which is true of `/read` and false of `/finish`:
