@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 import pytest
+
 from app.calculators.pagespeed import PERFORMANCE_SCORE, PageSpeedShapeError, performance_score
 
 FIXTURE = Path(__file__).parent / "fixtures" / "pagespeed" / "acme_mobile.json"
